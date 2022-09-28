@@ -13,7 +13,7 @@
 # define X(err,res,str)		(x_int(err,res,str,__FILE__,__LINE__))
 # define MAX(a,b)	((a > b) ? a : b)
 
-# define USAGE		"usage: bircd [port_number] (password)\n"
+# define USAGE		"Usage: %s port\n"
 
 typedef struct	s_fd
 {

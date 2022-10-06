@@ -1,3 +1,9 @@
+---
+name: survey_issue_template.md
+about: 調査チケット
+title: ''
+labels: ''
+assignees: ''
 
 ---
 

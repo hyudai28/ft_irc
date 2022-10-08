@@ -115,23 +115,161 @@ LINKS *.edu *.bu.edu            ;
 
 ---
 ## [Time message](#time)
+   Command: TIME
+```
+Parameters: [ <target> ]
+```
+
+timeコマンドは、指定されたサーバーからローカルタイムを照会するために使用されます。サーバに問い合わせるコマンドです。
+ 
+<target> パラメータを指定しない場合、コマンドを受信したサーバーは問い合わせに応答する必要があります。
+
+\<target> パラメーターにはワイルドカードを使用できます。
+
+
+```
+Numeric Replies:
+
+        ERR_NOSUCHSERVER              RPL_TIME
+
+Examples:
+TIME tolsun.oulu.fi             ;  
+サーバー "tolson.oulu.fi" の時刻を確認する。
+```
 
 
 ---
 ## [Connect message](#connect)
+   Command: CONNECT
+```
+Parameters: <target server> <port> [ <remote server> ]
+```
+
+CONNECTコマンドは、サーバーが他のサーバーとの新しい接続を直ちに試行するよう要求するために使用されます。CONNECT コマンドは、他のサーバとの新しい接続を直ちに確立するようサーバに要求するために使用されます。
+CONNECT は特権的なコマンドで、IRC Operator のみが使用できるようにすべきです。
+
+もし、 \<remote server>が与えられ、そのマスクが解析サーバーの名前と一致しない場合、CONNECTの試みは最初に一致したリモートサーバーに送られます。
+それ以外の場合は、リクエストを処理するサーバーによってCONNECTの試行が行われます。
+
+リモートCONNECTコマンドを受信したサーバーは、CONNECTコマンドに対応するWALLOPSメッセージを生成するべきである(SHOULD)。WALLOPSメッセージを生成するべきである。
+
+
+```
+Numeric Replies:
+
+        ERR_NOSUCHSERVER              ERR_NOPRIVILEGES
+        ERR_NEEDMOREPARAMS
+
+Examples:
+
+CONNECT tolsun.oulu.fi 6667     ; 
+ローカルサーバーからポート6667のtolsun.ulu.fiへの接続を試行するコマンド
+```
 
 
 ---
 ## [Trace message](#trace)
+   Command: TRACE
+```
+Parameters: [ \<target> ]
+```
+
+TRACEコマンドは、特定のサーバへの経路とそのピアの情報を見つけるために使用されます。  
+このコマンドを処理する各サーバは、それについて送信者に報告しなければならない(MUST)。 パススルーリンクからの応答は、デスティネーションへの経路を示す鎖を形成する。 この応答を送り返した後、与えられた<target>サーバに到達するまで、次のサーバに問い合わせを送らなければならない(MUST)。
+
+TRACEコマンドは、特定のサーバへの経路を見つけるために使われる。 
+このメッセージを処理する各サーバは、それがパススルーリンクであることを示す応答を送信することによって送信者にそれを伝え、応答の連鎖を形成しなければならない（MUST）。
+この応答を送り返した後、次のサーバにTRACEメッセージを送らなければならない(MUST)。TRACEメッセージを次のサーバに送らなければならない。
+もし を省略した場合、TRACEコマンドは送信者にメッセージを送信することが推奨されます（RECOMMENDED）。
+コマンドは、ローカルサーバがどのサーバに直接接続しているかを示すメッセージを送信者に送信することが推奨されます。
+
+
+もし、"the destination "が実際のサーバである場合、"the destination server is REQUIRED "となります。を報告することが要求されます。オペレータによって発行されたコマンドの場合、サーバーは、それに接続されているすべてのサーバー、サー コマンドを発行したのがオペレータの場合、サーバはそれに接続されているすべてのユーザーを報告してもよい(MAY) を報告してもかまいません。
+サーバーは、コマンドがオペレーターによって発行された場合、接続しているすべてのユーザーを報告してもよいです。を返します。 
+を省略した場合、そのニックネームに対する応答のみが行われます。を省略した場合、TRACE コマンドは処理サーバを対象として解析されることが推奨されま す（RECOMMENDED）。として解析されることが推奨されます。
+
+\<target> パラメータにはワイルドカードを使用することができます。
+
+```
+Numeric Replies:
+
+     ERR_NOSUCHSERVER
+
+TRACEメッセージが他のサーバに向けられたものである場合、すべての中間サーバはRPL_TRACELINK応答を返す必要があります。
+中間サーバーは、RPL_TRACELINK応答を返して、TRACEがそのサーバーを通過し、次にどこへ行くかを示さなければなりません。
+TRACEが通過したことと、次の行き先を示すために、すべての中間サーバはRPL_TRACELINK応答を返す必要があります。
+
+     RPL_TRACELINK
+
+TRACE応答は、以下の数値応答からいくつでも構成することができる。
+
+     RPL_TRACECONNECTING           RPL_TRACEHANDSHAKE
+     RPL_TRACEUNKNOWN              RPL_TRACEOPERATOR
+     RPL_TRACEUSER                 RPL_TRACESERVER
+     RPL_TRACESERVICE              RPL_TRACENEWTYPE
+     RPL_TRACECLASS                RPL_TRACELOG
+     RPL_TRACEEND
+
+Examples:
+
+TRACE *.oulu.fi                 ; 
+TRACEで*.oulu.fiに一致するサーバーに接続
+```
 
 
 ---
 ## [Admin message](#admin)
+   Command: ADMIN
+```
+Parameters: [ <target> ]
+```
 
+admin コマンドは、指定されたサーバー、または \<target> パラメーターが省略された場合は現在のサーバーの管理者についての情報を検索するために使用されます。 各サーバーは、ADMIN メッセージを他のサーバーに転送する機能を持たなければなりません（MUST）。
+
+\<target> パラメータにはワイルドカードを使用できます。
+
+```
+Numeric Replies:
+
+        ERR_NOSUCHSERVER
+        RPL_ADMINME                   RPL_ADMINLOC1
+        RPL_ADMINLOC2                 RPL_ADMINEMAIL
+
+Examples:
+
+ADMIN tolsun.oulu.fi            ; 
+tolsun.oulu.fiからADMIN返信を要求する。
+
+ADMIN syrk                      ; 
+ユーザーsyrkが接続しているサーバーへのADMINリクエスト
+```
 
 ---
 ## [Info message](#info)
+   Command: INFO
+```
+Parameters: [ <target> ]
+```
 
+INFOコマンドは、サーバーに関する情報を返すために必要です。
+バージョン、コンパイルされた時期、パッチレベル、起動時期、その他 起動時、その他関連すると思われる雑多な情報。関連すると思われるその他の情報です。
+
+\<target> パラメータにはワイルドカードを使用できます。
+
+```
+Numeric Replies:
+
+        ERR_NOSUCHSERVER
+        RPL_INFO                      RPL_ENDOFINFO
+
+Examples:
+
+INFO csd.bu.edu                 ; 
+csd.bu.eduからINFOの返信を要求する。
+
+INFO Angel                      ; 
+Angelが接続されているサーバーに情報を要求します。
+```
 
 
 

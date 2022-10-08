@@ -59,10 +59,8 @@ LUSERS コマンドは、IRC ネットワークのサイズに関する統計を
            RPL_LUSERME                     ERR_NOSUCHSERVER
 ```
 
-
 ---
-## [Stats message](#stats)
-
+## [Version message](#version)
    Command: VERSION
 ```
 Parameters: [ <target> ]
@@ -82,6 +80,51 @@ VERSION tolsun.oulu.fi          ;
 サーバー「tolsun.oulu.fi」のバージョンを確認するコマンドです。
 ```
 
+---
+## [Stats message](#stats)
+
+
+   Command: STATS
+```
+Parameters: [ <query> [ <target> ] ]
+```
+
+stats コマンドは、特定のサーバの統計情報を取得するために使用されます。 もし
+\<パラメータを省略した場合は、統計情報の末尾のみを返信します。
+を返します。
+
+クエリーは1文字でも可能で、その文字は送信先のサーバーでのみチェックされ、それ以外は中間サーバーに渡されます。
+のみチェックされ、それ以外は中間サーバーで無視されます。
+は無視され、変更されない。
+
+\<target> パラメータにはワイルドカードを使用できます。
+
+以下のものを除き、有効なクエリのリストは実装に依存します。
+実装に依存します。 以下の標準的なクエリーは、サーバーでサポートされるべきです（SHOULD）。
+以下の標準的なクエリーはサーバーでサポートされるべきです。
+
+```
+         l - サーバーのコネクションのリストを返し、各コネクションの確立時間、コネクション上のトラフィックをKbytesとメッセージで各方向に表示します。
+         m - サーバーがサポートしている各コマンドの使用回数を返します。使用回数が 0 のコマンドは省略可能です。
+         o - 構成された特権ユーザーのリストを返します。
+         u - サーバーが稼働している時間を示す文字列を返します。
+```
+また、クライアントやサーバーのアクセス設定もこの方法で公開することが推奨されます（RECOMMENDED）。
+
+```
+Numeric Replies:
+
+        ERR_NOSUCHSERVER
+        RPL_STATSLINKINFO                RPL_STATSUPTIME
+        RPL_STATSCOMMANDS                RPL_STATSOLINE
+        RPL_ENDOFSTATS
+```
+```
+Examples:
+
+STATS m                         ; 
+接続中のサーバーのコマンド使用状況を確認するコマンド
+```
 
 
 ---
@@ -339,30 +382,82 @@ Wildcards are allowed in the \<target> parameter.
            RPL_LUSERME                     ERR_NOSUCHSERVER
 ```
 
----
-## [Stats message](#stats_EN)
 
-   Command: VERSION
+---
+## [Version message](#version_EN)
+Command: VERSION
 ```
 Parameters: [ <target> ]
 ```
 
-The VERSION command is used to query the version of the server
-program.  An optional parameter \<target> is used to query the version
-of the server program which a client is not directly connected to.
-
-Wildcards are allowed in the \<target> parameter.
+The VERSION command is used to query the version of the server program.  
+An optional parameter <target> is used to query the version of the server program which a client is not directly connected to.
+  
+Wildcards are allowed in the <target> parameter.
 
 ```
 Numeric Replies:
+
         ERR_NOSUCHSERVER                RPL_VERSION
 
 Examples:
-VERSION tolsun.oulu.fi          ; Command to check the version of
-                                server "tolsun.oulu.fi".
+
+VERSION tolsun.oulu.fi          ; 
+Command to check the version of server "tolsun.oulu.fi".
 ```
 
 
+
+---
+## [Stats message](#stats_EN)
+
+   Command: STATS
+```
+Parameters: [ <query> [ <target> ] ]
+```
+
+The stats command is used to query statistics of certain server.  If
+\<query> parameter is omitted, only the end of stats reply is sent
+back.
+
+A query may be given for any single letter which is only checked by
+the destination server and is otherwise passed on by intermediate
+servers, ignored and unaltered.
+
+Wildcards are allowed in the \<target> parameter.
+
+Except for the ones below, the list of valid queries is
+implementation dependent.  The standard queries below SHOULD be
+supported by the server:
+```
+         l - returns a list of the server's connections, showing how
+             long each connection has been established and the
+             traffic over that connection in Kbytes and messages for
+             each direction;
+         m - returns the usage count for each of commands supported
+             by the server; commands for which the usage count is
+             zero MAY be omitted;
+         o - returns a list of configured privileged users,
+             operators;
+         u - returns a string showing how long the server has been
+             up.
+```
+It is also RECOMMENDED that client and server access configuration be
+published this way.
+```
+Numeric Replies:
+
+        ERR_NOSUCHSERVER
+        RPL_STATSLINKINFO                RPL_STATSUPTIME
+        RPL_STATSCOMMANDS                RPL_STATSOLINE
+        RPL_ENDOFSTATS
+```
+```
+Examples:
+
+STATS m                         ; 
+Command to check the command usage for the server you are connected to
+```
 
 ---
 ## [Links message](#links_EN)

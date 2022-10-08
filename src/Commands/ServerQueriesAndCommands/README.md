@@ -23,18 +23,94 @@
 
 ---
 ## [Motd](#motd)
+   Command: MOTD
+```
+   Parameters: [ <target> ]
+```
+MOTDコマンドは、指定されたサーバーの"今日の日付"を取得するためのものです。  
+\<target>が省略された場合は現在のサーバー。
+
+\<target>パラメータにはワイルドカードが使用できます。
+```
+   Numeric Replies:
+           RPL_MOTDSTART                   RPL_MOTD
+           RPL_ENDOFMOTD                   ERR_NOMOTD
+```
 
 
 ---
 ## [Lusers message](#lusers)
+Command: LUSERS
+```
+   Parameters: [ <mask> [ <target> ] ]
+```
+LUSERS コマンドは、IRC ネットワークのサイズに関する統計を取るために使用されます。パラメータを指定しない場合は、ネットワーク全体について回答します。
+
+\<mask> が指定された場合、そのマスクに一致するサーバによって形成されるネットワークの一部のみに関する返答がある。
+
+最後に、\<target> パラメータが指定されると、要求をそのサーバに転送し、そのサーバが応答を生成する。
+
+\<target> パラメータにはワイルドカードを使用できます。
+```
+   Numeric Replies:
+
+           RPL_LUSERCLIENT                 RPL_LUSEROP
+           RPL_LUSERUNKOWN                 RPL_LUSERCHANNELS
+           RPL_LUSERME                     ERR_NOSUCHSERVER
+```
 
 
 ---
 ## [Stats message](#stats)
 
+   Command: VERSION
+```
+Parameters: [ <target> ]
+```
+
+VERSIONコマンドは、サーバープログラムのバージョンを照会するために使用します。
+プログラムのバージョンを照会します。 オプションのパラメータ \<target> は、クライアントが直接接続していないサーバ・プログラムのバージョンを照会するために使用します。
+
+\<target> パラメータにはワイルドカードを使用できる。
+
+```
+Numeric Replies:
+        ERR_NOSUCHSERVER                RPL_VERSION
+
+Examples:
+VERSION tolsun.oulu.fi          ;   
+サーバー「tolsun.oulu.fi」のバージョンを確認するコマンドです。
+```
+
+
 
 ---
 ## [Links message](#links)
+```
+   Command: LINKS
+Parameters: [ [ <remote server> ] <server mask> ]
+```
+
+LINKSを使うと、ユーザーは、問い合わせに答えるサーバーが知っている すべてのサーバー名をリストアップすることができます。 返されるサーバーのリストはマスクと一致しなければならず、マスクが与えられていない場合は完全なリストが返される。
+
+<server mask> に加えて <remote server> が指定された場合、LINKS コマンドはその名前にマッチする最初のサーバに転送され、そのサーバは問い合わせに応答することが要求される。
+
+```
+Numeric Replies:
+
+     ERR_NOSUCHSERVER
+     RPL_LINKS                        RPL_ENDOFLINKS
+
+Examples:
+
+LINKS *.au                      ;  
+サーバ名が*.auに一致するサーバをすべてリストアップするコマンドです。
+
+LINKS *.edu *.bu.edu            ;  
+*.bu.eduに一致するサーバーを、*.eduに一致する最初のサーバーから見た状態でリストアップするコマンドです。
+```
+
+
 
 
 ---
@@ -62,16 +138,16 @@
 ---
 # 3.4 Server queries and commands EN
 
-   The server query group of commands has been designed to return
-   information about any server which is connected to the network.
+The server query group of commands has been designed to return
+information about any server which is connected to the network.
 
-   In these queries, where a parameter appears as <target>, wildcard
-   masks are usually valid.  For each parameter, however, only one query
-   and set of replies is to be generated.  In most cases, if a nickname
-   is given, it will mean the server to which the user is connected.
+In these queries, where a parameter appears as <target>, wildcard
+masks are usually valid.  For each parameter, however, only one query
+and set of replies is to be generated.  In most cases, if a nickname
+is given, it will mean the server to which the user is connected.
 
-   These messages typically have little value for services, it is
-   therefore RECOMMENDED to forbid services from using them.
+These messages typically have little value for services, it is
+therefore RECOMMENDED to forbid services from using them.
 
 
 The following commands correspond to this directory.
@@ -89,15 +165,15 @@ The following commands correspond to this directory.
 
 ---
 ## [Motd](#motd_EN)
-   Command: MOTD
+Command: MOTD
 ```
-   Parameters: [ <target> ]
+Parameters: [ <target> ]
 ```
 
-   The MOTD command is used to get the "Message Of The Day" of the given
-   server, or current server if \<target> is omitted.
+The MOTD command is used to get the "Message Of The Day" of the given
+server, or current server if \<target> is omitted.
 
-   Wildcards are allowed in the \<target> parameter.
+Wildcards are allowed in the \<target> parameter.
 ```
    Numeric Replies:
            RPL_MOTDSTART                   RPL_MOTD
@@ -106,8 +182,8 @@ The following commands correspond to this directory.
 
 ---
 ## [Lusers message](#lusers_EN)
-   Command: LUSERS
-   ```
+Command: LUSERS
+```
    Parameters: [ <mask> [ <target> ] ]
 ```
 The LUSERS command is used to get statistics about the size of the IRC network. If no parameter is given, the reply will be about the whole net. 
@@ -153,52 +229,33 @@ VERSION tolsun.oulu.fi          ; Command to check the version of
 ---
 ## [Links message](#links_EN)
 ```
-Command: STATS
-Parameters: [ <query> [ <target> ] ]
+   Command: LINKS
+Parameters: [ [ <remote server> ] <server mask> ]
 ```
 
-The stats command is used to query statistics of certain server.  If
-\<query> parameter is omitted, only the end of stats reply is sent
-back.
+With LINKS, a user can list all servernames, which are known by the
+server answering the query.  The returned list of servers MUST match
+the mask, or if no mask is given, the full list is returned.
 
-A query may be given for any single letter which is only checked by
-the destination server and is otherwise passed on by intermediate
-servers, ignored and unaltered.
-
-Wildcards are allowed in the \<target> parameter.
-
-Except for the ones below, the list of valid queries is
-implementation dependent.  The standard queries below SHOULD be
-supported by the server:
-
-         l - returns a list of the server's connections, showing how
-             long each connection has been established and the
-             traffic over that connection in Kbytes and messages for
-             each direction;
-         m - returns the usage count for each of commands supported
-             by the server; commands for which the usage count is
-             zero MAY be omitted;
-         o - returns a list of configured privileged users,
-             operators;
-         u - returns a string showing how long the server has been
-             up.
-
-It is also RECOMMENDED that client and server access configuration be
-published this way.
+If \<remote server> is given in addition to \<server mask>, the LINKS
+command is forwarded to the first server found that matches that name
+(if any), and that server is then required to answer the query.
 
 ```
 Numeric Replies:
 
-        ERR_NOSUCHSERVER
-        RPL_STATSLINKINFO                RPL_STATSUPTIME
-        RPL_STATSCOMMANDS                RPL_STATSOLINE
-        RPL_ENDOFSTATS
+     ERR_NOSUCHSERVER
+     RPL_LINKS                        RPL_ENDOFLINKS
 
 Examples:
 
-STATS m                         ; Command to check the command usage
-                                for the server you are connected to
+LINKS *.au                      ;  
+Command to list all servers which have a name that matches *.au;
+
+LINKS *.edu *.bu.edu            ;  
+Command to list servers matching *.bu.edu as seen by the first server matching *.edu.
 ```
+
 
 ---
 ## [Time message](#time_EN)

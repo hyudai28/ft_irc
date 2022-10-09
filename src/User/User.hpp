@@ -6,10 +6,16 @@
 
 class User
 {
-	std::string userName;
-	int			socketNumber;
-	bool		isAccess;
-
+	private:
+		std::string userName;
+		int			socketNumber;
+		bool		isAccess;
+		int			fd;
+	public:
+		User();
+		User(int fd);
+		~User();
+		void	receive();
 };
 
 #endif

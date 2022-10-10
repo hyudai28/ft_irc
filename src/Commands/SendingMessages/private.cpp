@@ -1,7 +1,19 @@
+/*
 3.3.1 Private messages
 
       Command: PRIVMSG
    Parameters: <msgtarget> <text to be sent>
+
+	PRIVMSGはユーザー間でプライベートなメッセージのやりとりに使われる、
+	チャンネルに投稿するときにも使われる
+	<msgtarget>は大体受け取り手のニックネームかチャンネル名とかです
+
+	<msgtarget>引数は(#<mask>)の形でホストマスク、もしくはサーバーのマスク($<mask>)
+	になりうる
+	どちらの場合でもサーバーはPRIVMSGをマスクに合致するサーバーかホストに送る
+	maskの場合は"."を一つ以上持ってないとダメで".*"は使えない
+	これは全てのユーザーに"#*", "$*"を使って送信することを防ぐため
+	wildcardは '*' and '?'でオペレーターしか使えない
 
    PRIVMSG is used to send private messages between users, as well as to
    send messages to channels.  <msgtarget> is usually the nickname of
@@ -63,3 +75,4 @@
                                    ; Message to all users who come from
                                    a host which has a name matching
                                    *.edu.
+*/

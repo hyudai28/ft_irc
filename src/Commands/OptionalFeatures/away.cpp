@@ -4,6 +4,14 @@
       Command: AWAY
    Parameters: [ <text> ]
 
+   離席中にPRIVMSGがきたとき、自動返信ができる
+   サーバーがPRIVMSGを返信する
+   PRIVMSGを送ったやつのサーバーがこれを行う
+
+   引数を渡すとそれに設定され、渡さないと削除される
+
+   メモリーも帯域も使うから、client-server間通信でしか使ってはいけない
+
    With the AWAY command, clients can set an automatic reply string for
    any PRIVMSG commands directed at them (not to a channel they are on).
    The server sends an automatic reply to the client sending the PRIVMSG

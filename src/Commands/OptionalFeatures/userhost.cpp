@@ -4,6 +4,8 @@
       Command: USERHOST
    Parameters: <nickname> *( SPACE <nickname> )
 
+   USERHOSTは５つまでのニックネームを引数にとり、見つかった情報を返す
+
    The USERHOST command takes a list of up to 5 nicknames, each
    separated by a space character and returns a list of information
    about each nickname that it found.  The returned list has each reply

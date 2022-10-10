@@ -4,16 +4,14 @@
       Command: WALLOPS
    Parameters: <Text to be sent>
 
+	全てのw modeがついたユーザーにメッセージを送る
+
+	悪用されやすいので、実装するときは創始者？しか対象にできないとかの
+	実装が望ましい
+
    The WALLOPS command is used to send a message to all currently
    connected users who have set the 'w' user mode for themselves.  (See
    Section 3.1.5 "User modes").
-
-
-
-Kalt                         Informational                     [Page 41]
-
-RFC 2812          Internet Relay Chat: Client Protocol        April 2000
-
 
    After implementing WALLOPS as a user command it was found that it was
    often and commonly abused as a means of sending a message to a lot of

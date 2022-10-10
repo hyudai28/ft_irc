@@ -4,6 +4,11 @@
       Command: DIE
    Parameters: None
 
+	オペレーターがサーバーをシャットダウンしたいときに使う
+	危険だから実装は任意
+
+	自分が直接繋がっているサーバーにしか使用できない
+
    An operator can use the DIE command to shutdown the server.  This
    message is optional since it may be viewed as a risk to allow
    arbitrary people to connect to a server as an operator and execute

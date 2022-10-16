@@ -10,6 +10,7 @@
 #include <poll.h>
 #include <unistd.h>
 #include <netinet/in.h>
+#include <vector>
 
 Server::Server()
 {
@@ -21,7 +22,7 @@ Server::~Server()
 	std::cout << "server stop" << std::endl;
 }
 
-void Server::start(int port)
+void	Server::start(int port)
 {
 	//クライアントと通信するソケットの作成
 	this->socket_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -74,21 +75,33 @@ void Server::start(int port)
 	this->poll_fds.back().events = POLLIN;
 }
 
+void	Server::delete_user(User &user)
+{
+	std::vector<User *> broadcast_users = std::vector<User *>();
+	broadcast_users.push_back(&user);
+
+	for (std::vector<pollfd>::iterator it_pfd = this->poll_fds.begin(); it_pfd != this->poll_fds.end(); ++it_pfd)
+		if ((*it_pfd).fd == user.get_fd())
+		{
+			this->poll_fds.erase(it_pfd);
+			break;
+		}
+	users.erase(user.get_fd());
+	delete &user;
+}
+
 #define FALSE 0
 #define TRUE 1
 
-void Server::loop()
+void	Server::loop()
 {
 	int res;
 	int accept_fd;
 	int readable, end_server = FALSE;
 	struct sockaddr_in addr;
-
-	fd_set master_set, working_set;
 	int max_fd = this->socket_fd;
 	int timeout = (3 * 60 * 1000);
 
-	// std::cout << "wait poll()" << std::endl;
 	res = poll(&this->poll_fds[0], this->poll_fds.size(), timeout);
 	if (res == -1)
 	{
@@ -124,27 +137,37 @@ void Server::loop()
 		{
 			if ((*it).revents == POLLIN)
 			{
-				this->users[accept_fd]->receive();
+				this->users[(*it).fd]->receive();
 			}
 		}
 	}
-
-	/*************************************************************/
-	/* Clean up all of the sockets that are open                 */
-	/*************************************************************/
-	for (int i = 0; i <= max_fd; ++i)
+	std::vector<User *> users = get_vector_users();
+	for (std::vector<User *>::iterator it = users.begin(); it != users.end(); ++it)
 	{
-		if (FD_ISSET(i, &master_set))
-			close(i);
+		if ((*it)->get_is_exit() == true)
+		{
+			close((*it)->get_fd());
+			delete_user(*(*it));
+		}
 	}
 }
 
-int Server::get_port()
+std::vector<User *> Server::get_vector_users()
+{
+	std::vector<User *> users = std::vector<User *>();
+	for (std::map<int, User *>::iterator it = this->users.begin(); it != this->users.end(); ++it)
+	{
+		users.push_back(it->second);
+	}
+	return (users);
+}
+
+int	Server::get_port()
 {
 	return (this->port);
 }
 
-int Server::get_socket_fd()
+int	Server::get_socket_fd()
 {
 	return (this->socket_fd);
 }

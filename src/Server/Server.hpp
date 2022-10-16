@@ -20,7 +20,10 @@ class Server
 
 		void	start(int port);
 		void	loop();
+		void	delete_user(User &user);
 
+
+		std::vector<User *> get_vector_users();
 		int		get_port();
 		int		get_socket_fd();
 };

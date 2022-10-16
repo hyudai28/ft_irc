@@ -15,12 +15,16 @@ class User
 		std::string	user_name;
 		int			socket_number;
 		bool		is_access;
+		bool		is_exit;
 		int			fd;
 	public:
 		User();
 		User(int fd, struct sockaddr_in addr);
 		~User();
 		void	receive();
+
+		bool	get_is_exit();
+		int		get_fd();
 };
 
 #endif

@@ -13,6 +13,8 @@ CXXFLAGS += $(INCLUDE)
 
 SRC_DIR =		src/
 SRC_FILES	=	Server/Server.cpp \
+				User/User.cpp \
+				User/Command.cpp \
 			main.cpp
 SRCS = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
@@ -35,6 +37,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)Server
+	mkdir -p $(OBJ_DIR)User
 
 clean:
 	rm -rf $(OBJ_DIR)

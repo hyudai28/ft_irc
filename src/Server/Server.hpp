@@ -12,7 +12,7 @@ class Server
 	private:
 		int	port;
 		int	socket_fd;
-		std::vector<pollfd>	pollfds;
+		std::vector<struct pollfd>	poll_fds;
 		std::map<int, User *>	users;
 	public:
 		Server();

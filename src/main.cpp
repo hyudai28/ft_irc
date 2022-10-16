@@ -48,5 +48,6 @@ int	main (int argc, char *argv[])
     Server server;
 
     server.start(6667);
-	server.loop();
+	while (1)
+		server.loop();
 }

@@ -1,21 +1,30 @@
 #ifndef USER_HPP
-#define USER_HPP
+# define USER_HPP
 
-#include <string>
-#include <iostream>
+# include "Command.hpp"
+
+# include <string>
+# include <iostream>
+
+# define BUFFER_MAX 512
 
 class User
 {
 	private:
-		std::string userName;
-		int			socketNumber;
-		bool		isAccess;
+		Command	command;
+		std::string	user_name;
+		int			socket_number;
+		bool		is_access;
+		bool		is_exit;
 		int			fd;
 	public:
 		User();
-		User(int fd);
+		User(int fd, struct sockaddr_in addr);
 		~User();
 		void	receive();
+
+		bool	get_is_exit();
+		int		get_fd();
 };
 
 #endif

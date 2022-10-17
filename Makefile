@@ -3,9 +3,9 @@ NAME = ft_irc
 # Config
 # ****************************************************************************
 
-CXX = g++
-INCLUDE = -I src/Server/ -I src/User/
-CXXFLAGS =
+CXX = c++
+INCLUDE = -I src/Server/ -I src/User/ -I src/User/Command
+CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 CXXFLAGS += $(INCLUDE)
 
 # Source files
@@ -13,6 +13,8 @@ CXXFLAGS += $(INCLUDE)
 
 SRC_DIR =		src/
 SRC_FILES	=	Server/Server.cpp \
+				User/User.cpp \
+				User/Command/Command.cpp \
 			main.cpp
 SRCS = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
@@ -35,6 +37,8 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)Server
+	mkdir -p $(OBJ_DIR)User
+	mkdir -p $(OBJ_DIR)User/Command
 
 clean:
 	rm -rf $(OBJ_DIR)

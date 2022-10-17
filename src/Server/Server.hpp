@@ -12,7 +12,7 @@ class Server
 	private:
 		int	port;
 		int	socket_fd;
-		std::vector<pollfd>	pollfds;
+		std::vector<struct pollfd>	poll_fds;
 		std::map<int, User *>	users;
 	public:
 		Server();
@@ -20,7 +20,10 @@ class Server
 
 		void	start(int port);
 		void	loop();
+		void	delete_user(User &user);
 
+
+		std::vector<User *> get_vector_users();
 		int		get_port();
 		int		get_socket_fd();
 };

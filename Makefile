@@ -3,9 +3,9 @@ NAME = ft_irc
 # Config
 # ****************************************************************************
 
-CXX = g++
+CXX = c++
 INCLUDE = -I src/Server/ -I src/User/ -I src/User/Command
-CXXFLAGS =
+CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 CXXFLAGS += $(INCLUDE)
 
 # Source files

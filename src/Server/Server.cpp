@@ -12,6 +12,8 @@
 #include <netinet/in.h>
 #include <vector>
 
+#include <cerrno>
+
 Server::Server()
 {
 	std::cout << "server start" << std::endl;
@@ -28,7 +30,7 @@ void	Server::start(int port)
 	this->socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (this->socket_fd == -1)
 	{
-		exit(1);
+		std::exit(1);
 	}
 
 	//ソケットを再利用可能にする？アドレスにバインドするとかなんとか
@@ -38,7 +40,7 @@ void	Server::start(int port)
 	if (res == 1)
 	{
 		close(this->socket_fd);
-		exit(2);
+		std::exit(2);
 	}
 
 	//ソケットをノンブロッキングにする
@@ -46,7 +48,7 @@ void	Server::start(int port)
 	if (res == -1)
 	{
 		close(this->socket_fd);
-		exit(3);
+		std::exit(3);
 	}
 
 	//ソケットにバインドする
@@ -59,7 +61,7 @@ void	Server::start(int port)
 	if (res == -1)
 	{
 		close(this->socket_fd);
-		exit(4);
+		std::exit(4);
 	}
 
 	//ﾍｰｲ ﾘｯｽﾝ
@@ -67,7 +69,7 @@ void	Server::start(int port)
 	if (res == -1)
 	{
 		close(this->socket_fd);
-		exit(5);
+		std::exit(5);
 	}
 
 	this->poll_fds.push_back(pollfd());
@@ -97,7 +99,6 @@ void	Server::loop()
 {
 	int res;
 	int accept_fd;
-	int readable, end_server = FALSE;
 	struct sockaddr_in addr;
 	int max_fd = this->socket_fd;
 	int timeout = (3 * 60 * 1000);
@@ -105,11 +106,11 @@ void	Server::loop()
 	res = poll(&this->poll_fds[0], this->poll_fds.size(), timeout);
 	if (res == -1)
 	{
-		exit(6);
+		std::exit(6);
 	}
 	if (res == 0)
 	{
-		exit(7);
+		std::exit(7);
 	}
 	if (this->poll_fds[0].revents == POLLIN)
 	{
@@ -118,9 +119,9 @@ void	Server::loop()
 		{
 			if (errno != EWOULDBLOCK)
 			{
-				end_server = TRUE;
+				// endserver = true
 			}
-			exit(-1);
+			std::exit(-1);
 		}
 		// std::cout << "new connection -> [" << accept_fd << "]" << std::endl;
 		this->users[accept_fd] = new User(accept_fd, addr);

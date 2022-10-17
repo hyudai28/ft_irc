@@ -45,9 +45,11 @@
 
 int	main (int argc, char *argv[])
 {
-    Server server;
+	(void)argc;
+	(void)argv;
+	Server server;
 
-    server.start(6667);
+	server.start(6667);
 	while (1)
 		server.loop();
 }

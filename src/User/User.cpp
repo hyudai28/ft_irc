@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <strings.h>
+#include <cstdlib>
 
 User::User()
 {
@@ -11,6 +12,7 @@ User::User()
 
 User::User(int fd, struct sockaddr_in addr)
 {
+	(void)addr;
 	this->fd = fd;
 	this->is_exit = false;
 }
@@ -29,7 +31,7 @@ void	User::receive()
 	res = recv(fd, &buffer, BUFFER_MAX, 0);
 	if (res < 0)
 	{
-		exit (7);
+		std::exit (7);
 	}
 	else if (res == 0)
 	{

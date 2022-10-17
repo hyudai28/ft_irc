@@ -4,7 +4,7 @@ NAME = ft_irc
 # ****************************************************************************
 
 CXX = g++
-INCLUDE = -I src/Server/ -I src/User/
+INCLUDE = -I src/Server/ -I src/User/ -I src/User/Command
 CXXFLAGS =
 CXXFLAGS += $(INCLUDE)
 
@@ -14,7 +14,7 @@ CXXFLAGS += $(INCLUDE)
 SRC_DIR =		src/
 SRC_FILES	=	Server/Server.cpp \
 				User/User.cpp \
-				User/Command.cpp \
+				User/Command/Command.cpp \
 			main.cpp
 SRCS = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
@@ -38,6 +38,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)Server
 	mkdir -p $(OBJ_DIR)User
+	mkdir -p $(OBJ_DIR)User/Command
 
 clean:
 	rm -rf $(OBJ_DIR)

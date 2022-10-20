@@ -14,7 +14,7 @@ User::User(int fd, struct sockaddr_in addr)
 {
 	(void)addr;
 	this->fd = fd;
-	this->is_exit = false;
+	this->isExit = false;
 }
 
 User::~User()
@@ -36,7 +36,7 @@ void	User::receive()
 	else if (res == 0)
 	{
 		std::cout << "disconnect: " << this->fd << std::endl;
-		this->is_exit = true;
+		this->isExit = true;
 		// exit (8);
 	}
 	std::cout << buffer;
@@ -45,12 +45,12 @@ void	User::receive()
 	// command.parse(buffer);
 }
 
-bool	User::get_is_exit()
+bool	User::getIsExit()
 {
-	return (this->is_exit);
+	return (this->isExit);
 }
 
-int		User::get_fd()
+int		User::getFd()
 {
 	return (this->fd);
 }

@@ -12,10 +12,10 @@ class User
 {
 	private:
 		Command	command;
-		std::string	user_name;
-		int			socket_number;
-		bool		is_access;
-		bool		is_exit;
+		std::string	userName;
+		int			socketNumber;
+		bool		isAccess;
+		bool		isExit;
 		int			fd;
 	public:
 		User();
@@ -23,8 +23,8 @@ class User
 		~User();
 		void	receive();
 
-		bool	get_is_exit();
-		int		get_fd();
+		bool	getIsExit();
+		int		getFd();
 };
 
 #endif

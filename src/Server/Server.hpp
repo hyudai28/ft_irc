@@ -7,25 +7,34 @@
 # include <map>
 # include <poll.h>
 
+# define DEBUG 1
+
 class Server
 {
 	private:
+		bool	endServer;
+
 		int	port;
-		int	socket_fd;
-		std::vector<struct pollfd>	poll_fds;
+		int	socketFd;
+		std::vector<struct pollfd>	pollFds;
 		std::map<int, User *>	users;
 	public:
 		Server();
 		~Server();
 
 		void	start(int port);
+
 		void	loop();
-		void	delete_user(User &user);
+		void	waitEvent();
+		void	addUser();
+		void	checkUserStatus();
+
+		void	deleteUser(User &user);
 
 
-		std::vector<User *> get_vector_users();
-		int		get_port();
-		int		get_socket_fd();
+		std::vector<User *> getVectorUsers();
+		int		getPort();
+		int		getSocketFd();
 };
 
 #endif /* SERVER_HPP */

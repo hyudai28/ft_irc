@@ -27,6 +27,7 @@ class Server
 		void	loop();
 		void	waitEvent();
 		void	addUser();
+		void	receiveMessage();
 		void	checkUserStatus();
 
 		void	deleteUser(User &user);

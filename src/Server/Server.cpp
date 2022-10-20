@@ -144,6 +144,17 @@ void	Server::checkUserStatus()
 	}
 }
 
+void	Server::receiveMessage()
+{
+	for (std::vector<pollfd>::iterator it = pollFds.begin(); it != pollFds.end(); ++it)
+	{
+		if ((*it).revents == POLLIN)
+		{
+			this->users[(*it).fd]->receive();
+		}
+	}
+}
+
 void	Server::loop()
 {
 	// int maxFd = this->socketFd;
@@ -155,11 +166,7 @@ void	Server::loop()
 	}
 	else //それ以外のfdから発生するイベントは受信
 	{
-		for (std::vector<pollfd>::iterator it = pollFds.begin(); it != pollFds.end(); ++it) {
-			if ((*it).revents == POLLIN) {
-				this->users[(*it).fd]->receive();
-			}
-		}
+		receiveMessage();
 	}
 	//ユーザーが退出したら削除する
 	checkUserStatus();

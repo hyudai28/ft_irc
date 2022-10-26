@@ -7,7 +7,6 @@
 
 void	Server::socketHandle()
 {
-	errno = EAFNOSUPPORT;
 	std::cerr << "Error: socket() failed..." << std::endl;
 	std::cerr << std::strerror(errno) << std::endl;
 	std::exit (1);

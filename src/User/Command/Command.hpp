@@ -3,6 +3,7 @@
 
 # include <string>
 # include <vector>
+# include <iostream>
 
 class Command
 {
@@ -14,7 +15,7 @@ class Command
 	public:
 		Command();
 
-		void		parse();
+		void		parse(std::string buffer);
 
 		std::string	get_prefix();
 		std::vector<std::string>	get_commands();

@@ -13,6 +13,7 @@ CXXFLAGS += $(INCLUDE)
 
 SRC_DIR =		src/
 SRC_FILES	=	Server/Server.cpp \
+				Server/Error.cpp \
 				User/User.cpp \
 				User/Command/Command.cpp \
 			main.cpp

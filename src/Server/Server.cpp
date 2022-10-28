@@ -24,35 +24,28 @@ Server::Server()
 
 Server::~Server()
 {
+	users.erase(users.begin(), users.end());
 	std::cout << "server stop" << std::endl;
 }
 
 void	Server::start(int port)
 {
 	//クライアントと通信するソケットの作成
-	this->socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (this->socket_fd == -1)
-	{
-		std::exit(1);
-	}
+	this->socketFd = socket(AF_INET, SOCK_STREAM, 0);
+	if (this->socketFd == -1)
+		socketHandle();
 
 	//ソケットを再利用可能にする？アドレスにバインドするとかなんとか
-	int opt_val;
+	int optVal;
 	int res;
-	res = setsockopt(this->socket_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&opt_val, sizeof(opt_val));
+	res = setsockopt(this->socketFd, SOL_SOCKET, SO_REUSEADDR, (char *)&optVal, sizeof(optVal));
 	if (res == 1)
-	{
-		close(this->socket_fd);
-		std::exit(2);
-	}
+		setsockoptHandle();
 
 	//ソケットをノンブロッキングにする
-	res = ioctl(this->socket_fd, FIONBIO, (char *)&opt_val);
+	res = ioctl(this->socketFd, FIONBIO, (char *)&optVal);
 	if (res == -1)
-	{
-		close(this->socket_fd);
-		std::exit(3);
-	}
+		ioctlHandle();
 
 	//ソケットにバインドする
 	struct sockaddr_in sin;
@@ -60,109 +53,116 @@ void	Server::start(int port)
 	sin.sin_family = AF_INET;
 	sin.sin_addr.s_addr = INADDR_ANY;
 	sin.sin_port = htons(port);
-	res = bind(this->socket_fd, (struct sockaddr *)&sin, sizeof(sin));
+	res = bind(this->socketFd, (struct sockaddr *)&sin, sizeof(sin));
 	if (res == -1)
-	{
-		close(this->socket_fd);
-		std::exit(4);
-	}
+		bindHandle();
 
-	//ﾍｰｲ ﾘｯｽﾝ
-	res = listen(this->socket_fd, port);
+	res = listen(this->socketFd, port);
 	if (res == -1)
-	{
-		close(this->socket_fd);
-		std::exit(5);
-	}
+		listenHandle();
 
-	this->poll_fds.push_back(pollfd());
-	this->poll_fds.back().fd = this->socket_fd;
-	this->poll_fds.back().events = POLLIN;
+	this->pollFds.push_back(pollfd());
+	this->pollFds.back().fd = this->socketFd;
+	this->pollFds.back().events = POLLIN;
 }
 
-void	Server::delete_user(User &user)
+void	Server::loop()
+{
+	// int maxFd = this->socketFd;
+
+	waitEvent(); //イベントが来るまで待機
+	if (pollFds[0].revents == POLLIN) //socketのfdにイベントが発生した時にユーザー追加
+	{
+		addUser();
+		if (this->endServer == true)
+			acceptHandle();
+	}
+	else //それ以外のfdから発生するイベントは受信
+	{
+		receiveMessage();
+	}
+	//ユーザーが退出したら削除する
+	checkUserStatus();
+}
+
+void	Server::addUser()
+{
+	int	acceptFd;
+	struct sockaddr_in addr;
+
+	acceptFd = accept(socketFd, NULL, NULL);
+	if (acceptFd == -1 && errno != EWOULDBLOCK)
+	{
+		this->endServer = true;
+		return ;
+	}
+	if (DEBUG)
+		std::cout << "new connection -> [" << acceptFd << "]" << std::endl;
+	this->users[acceptFd] = new User(acceptFd, addr);
+	this->pollFds.push_back(pollfd());
+	this->pollFds.back().fd = acceptFd;
+	this->pollFds.back().events = POLLIN;
+}
+
+void	Server::deleteUser(User &user)
 {
 	std::vector<User *> broadcast_users = std::vector<User *>();
 	broadcast_users.push_back(&user);
 
-	for (std::vector<pollfd>::iterator it_pfd = this->poll_fds.begin(); it_pfd != this->poll_fds.end(); ++it_pfd)
-		if ((*it_pfd).fd == user.get_fd())
+	for (std::vector<pollfd>::iterator ite = this->pollFds.begin(); ite != this->pollFds.end(); ++ite)
+	{
+		if ((*ite).fd == user.getFd())
 		{
-			this->poll_fds.erase(it_pfd);
+			this->pollFds.erase(ite);
 			break;
 		}
-	users.erase(user.get_fd());
+	}
+	users.erase(user.getFd());
 	delete &user;
 }
 
-#define FALSE 0
-#define TRUE 1
-
-void	Server::loop()
+void	Server::waitEvent()
 {
-	int res;
-	int accept_fd;
-	struct sockaddr_in addr;
-	int max_fd = this->socket_fd;
-	int timeout = (3 * 60 * 1000);
+	int	timeout = (3 * 60 * 1000);
+	int	res;
 
-	res = poll(&this->poll_fds[0], this->poll_fds.size(), timeout);
+	res = poll(&this->pollFds[0], this->pollFds.size(), timeout);
 	if (res == -1)
-	{
-		std::exit(6);
-	}
-	if (res == 0)
-	{
-		std::exit(7);
-	}
-	if (this->poll_fds[0].revents == POLLIN)
-	{
-		accept_fd = accept(socket_fd, NULL, NULL);
-		if (accept_fd < 0)
-		{
-			if (errno != EWOULDBLOCK)
-			{
-				// endserver = true
-			}
-			std::exit(-1);
-		}
-		// std::cout << "new connection -> [" << accept_fd << "]" << std::endl;
-		this->users[accept_fd] = new User(accept_fd, addr);
-		this->poll_fds.push_back(pollfd());
-		this->poll_fds.back().fd = accept_fd;
-		this->poll_fds.back().events = POLLIN;
+		pollHandle();
+	// if (res == 0) //timeout
+	// 	std::cout << "poll time out" << std::endl;
+}
 
-		if (accept_fd > max_fd)
-			max_fd = accept_fd;
-	}
-	else
-	{
-		for (std::vector<pollfd>::iterator it = this->poll_fds.begin(); it != this->poll_fds.end(); ++it)
-		{
-			if ((*it).revents == POLLIN)
-			{
-				this->users[(*it).fd]->receive();
-			}
-		}
-	}
-	// exec commands
-	std::vector<User *> users = get_vector_users();
+void	Server::checkUserStatus()
+{
+	std::vector<User *> users = getVectorUsers();
 	for (std::vector<User *>::iterator it = users.begin(); it != users.end(); ++it)
 	{
-		if ((*it)->get_command().get_commands().size() == 1)
+		if ((*it)->getCommand().get_commands().size() == 1)
 		{
 			std::cout << "we got" << std::endl;
-			std::cout << (*it)->get_command().get_commands().at(0) << std::endl;
+			std::cout << (*it)->getCommand().get_commands().at(0) << std::endl;
 		}
-		if ((*it)->get_is_exit() == true)
+		// if ((*it)->getIsExit() == true)
+		// {
+		// 	close((*it)->getFd());
+		// 	deleteUser(*(*it));
+		// }
+	}
+}
+
+void	Server::receiveMessage()
+{
+	for (std::vector<pollfd>::iterator it = pollFds.begin(); it != pollFds.end(); ++it)
+	{
+		if ((*it).revents == POLLIN)
 		{
-			close((*it)->get_fd());
-			delete_user(*(*it));
+			this->users[(*it).fd]->receive();
 		}
 	}
 }
 
-std::vector<User *> Server::get_vector_users()
+std::vector<User *> Server::getVectorUsers()
 {
 	std::vector<User *> users = std::vector<User *>();
 	for (std::map<int, User *>::iterator it = this->users.begin(); it != this->users.end(); ++it)
@@ -172,12 +172,12 @@ std::vector<User *> Server::get_vector_users()
 	return (users);
 }
 
-int	Server::get_port()
+int	Server::getPort()
 {
 	return (this->port);
 }
 
-int	Server::get_socket_fd()
+int	Server::getSocketFd()
 {
-	return (this->socket_fd);
+	return (this->socketFd);
 }

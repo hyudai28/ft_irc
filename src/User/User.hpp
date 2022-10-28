@@ -12,19 +12,19 @@ class User
 {
 	private:
 		Command	command;
-		std::string	user_name;
-		// int		socket_number;
-		// bool		is_access;
-		bool		is_exit;
+		std::string	userName;
+		// int			socketNumber;
+		// bool		isAccess;
+		bool		isExit;
 		int			fd;
 	public:
 		User();
 		User(int fd, struct sockaddr_in addr);
 		~User();
 		void	receive();
-		Command get_command();
-		bool	get_is_exit();
-		int		get_fd();
+		Command getCommand();
+		bool	getIsExit();
+		int		getFd();
 };
 
 #endif

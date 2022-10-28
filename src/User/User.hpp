@@ -13,8 +13,8 @@ class User
 	private:
 		Command	command;
 		std::string	userName;
-		int			socketNumber;
-		bool		isAccess;
+		// int			socketNumber;
+		// bool		isAccess;
 		bool		isExit;
 		int			fd;
 	public:

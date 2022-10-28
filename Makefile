@@ -41,6 +41,9 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)User
 	mkdir -p $(OBJ_DIR)User/Command
 
+run: all
+	./ft_irc
+
 clean:
 	rm -rf $(OBJ_DIR)
 	rm -fr *.dSYM

@@ -37,9 +37,9 @@ void	User::receive()
 	string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
 	if (-1 == send(fd, string.c_str(), string.length(), 0))
 		std::cout << "it is wrong!!" << std::endl;
-	// string = ":kirari JOIN #one\n";
-	// if (-1 == send(fd, string.c_str(), string.length(), 0))
-	// 	std::cout << "it is wrong!!" << std::endl;
+	string = ":kirari JOIN #one\n";
+	if (-1 == send(fd, string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
 	string = ":kirari PRIVMSG #one :hello~~\n";
 	if (-1 == send(fd, string.c_str(), string.length(), 0))
 		std::cout << "it is wrong!!" << std::endl;

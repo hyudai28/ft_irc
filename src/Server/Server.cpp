@@ -83,6 +83,7 @@ void	Server::loop()
 	}
 	//ユーザーが退出したら削除する
 	checkUserStatus();
+	// TODO やるべきこと、checkUserStatusの中身が入っているならそこで出すこと
 }
 
 void	Server::addUser()
@@ -140,14 +141,14 @@ void	Server::checkUserStatus()
 	{
 		if ((*it)->getCommand().get_commands().size() == 1)
 		{
-			std::cout << "we got" << std::endl;
+			std::cout << "do command" << std::endl;
 			std::cout << (*it)->getCommand().get_commands().at(0) << std::endl;
 		}
-		// if ((*it)->getIsExit() == true)
-		// {
-		// 	close((*it)->getFd());
-		// 	deleteUser(*(*it));
-		// }
+		if ((*it)->getIsExit() == true)
+		{
+			close((*it)->getFd());
+			deleteUser(*(*it));
+		}
 	}
 }
 

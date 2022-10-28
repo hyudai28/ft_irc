@@ -13,6 +13,7 @@ CXXFLAGS += $(INCLUDE)
 
 SRC_DIR =		src/
 SRC_FILES	=	Server/Server.cpp \
+				Server/Error.cpp \
 				User/User.cpp \
 				User/Command/Command.cpp \
 			main.cpp
@@ -49,4 +50,5 @@ fclean:
 	rm -fr *.dSYM
 
 re: fclean all
+
 .PHONY: all clean fclean re

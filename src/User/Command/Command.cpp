@@ -32,6 +32,8 @@ void    Command::parse(std::string buffer)
     }
     //splitする
     std::string elem = buffer.substr(0, buffer.find(delim));
+    //return value 最後に詳細あり
+    std::string command = elem;
 	std::cout << "elem: " << elem << std::endl;
     //cmds vector 初期化
     commands.resize(0);
@@ -46,12 +48,12 @@ void    Command::parse(std::string buffer)
     while (buffer != elem)
     {
         elem = buffer.substr(0, buffer.find(delim));
-        std::cout << "on loop: " << elem << std::endl;
+        // std::cout << "on loop: " << elem << std::endl;
         args.push_back(elem);
         buffer = buffer.erase(0, buffer.find(delim) + delim.length());
     }
-    for (unsigned int i =0; i < commands.size(); i++)
-        std::cout <<  "cmds elem is " << commands.at(i) << std::endl;
-    for (unsigned int i =0; i < args.size(); i++)
-        std::cout <<  "args elem is " << args.at(i) << std::endl;
+    // for (unsigned int i =0; i < commands.size(); i++)
+    //     std::cout <<  "cmds elem is " << commands.at(i) << std::endl;
+    // for (unsigned int i =0; i < args.size(); i++)
+    //     std::cout <<  "args elem is " << args.at(i) << std::endl;
 }

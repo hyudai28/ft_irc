@@ -57,3 +57,14 @@ int		User::getFd()
 {
 	return (this->fd);
 }
+
+
+std::string		User::getUserName()
+{
+	return (this->userName);
+}
+
+void	User::setUserName(std::string name)
+{
+	this->userName = name;
+}

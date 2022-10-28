@@ -140,6 +140,11 @@ void	Server::checkUserStatus()
 			close((*it)->getFd());
 			deleteUser(*(*it));
 		}
+		if ((*it)->command.get_commands().size() == 1)
+		{
+			std::cout << "itr: " << (*it)->command.get_commands().at(0) << std::endl;
+			// std::exit(1);
+		}
 	}
 }
 

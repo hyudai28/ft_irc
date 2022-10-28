@@ -42,9 +42,9 @@ void	Command::parse(std::string buffer)
 		buffer = buffer.erase(0, buffer.find(delim) + delim.length());
 	}
 	for (unsigned int i =0; i < commands.size(); i++)
-		std::cout <<  "vector elem is " << commands.at(i) << endl;
+		std::cout <<  "cmds elem is " << commands.at(i) << endl;
 	for (unsigned int i =0; i < args.size(); i++)
-		std::cout <<  "vector elem is " << args.at(i) << endl;
+		std::cout <<  "args elem is " << args.at(i) << endl;
 }
 
 std::string	Command::get_prefix()

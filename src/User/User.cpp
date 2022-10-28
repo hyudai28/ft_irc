@@ -29,21 +29,40 @@ void	User::receive()
 
 	bzero(buffer, BUFFER_MAX);
 	res = recv(fd, &buffer, BUFFER_MAX, 0);
+	std::string string = "127.0.0.1 PASS Correct password\n";
+	if (-1 == send(fd, string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
+	string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
+	if (-1 == send(fd, string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
+	// string = ":kirari JOIN #one\n";
+	// if (-1 == send(fd, string.c_str(), string.length(), 0))
+	// 	std::cout << "it is wrong!!" << std::endl;
+	string = ":kirari PRIVMSG #one :hello~~\n";
+	if (-1 == send(fd, string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
 	if (res < 0)
 	{
 		std::exit (7);
 	}
 	else if (res == 0)
 	{
+		std::cout << "hello" << std::endl;
 		std::cout << "disconnect: " << this->fd << std::endl;
 		this->is_exit = true;
-		// exit (8);
 	}
 	std::cout << buffer;
 	buffer[BUFFER_MAX] = '\0';
 
-	// command.parse(buffer);
+	// comamnd
+	command.parse(buffer);
 }
+
+Command	User::get_command()
+{
+	return (this->command);
+}
+
 
 bool	User::get_is_exit()
 {

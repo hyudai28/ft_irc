@@ -14,6 +14,9 @@
 
 #include <cerrno>
 
+#include "Command.hpp"
+
+
 Server::Server()
 {
 	std::cout << "server start" << std::endl;
@@ -142,9 +145,15 @@ void	Server::loop()
 			}
 		}
 	}
+	// exec commands
 	std::vector<User *> users = get_vector_users();
 	for (std::vector<User *>::iterator it = users.begin(); it != users.end(); ++it)
 	{
+		if ((*it)->get_command().get_commands().size() == 1)
+		{
+			std::cout << "we got" << std::endl;
+			std::cout << (*it)->get_command().get_commands().at(0) << std::endl;
+		}
 		if ((*it)->get_is_exit() == true)
 		{
 			close((*it)->get_fd());

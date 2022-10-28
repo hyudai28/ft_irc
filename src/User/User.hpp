@@ -13,8 +13,8 @@ class User
 	private:
 		Command	command;
 		std::string	user_name;
-		int			socket_number;
-		bool		is_access;
+		// int		socket_number;
+		// bool		is_access;
 		bool		is_exit;
 		int			fd;
 	public:
@@ -22,7 +22,7 @@ class User
 		User(int fd, struct sockaddr_in addr);
 		~User();
 		void	receive();
-
+		Command get_command();
 		bool	get_is_exit();
 		int		get_fd();
 };

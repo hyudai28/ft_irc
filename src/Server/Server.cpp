@@ -16,7 +16,6 @@
 
 #include "Command.hpp"
 
-
 Server::Server()
 {
 	std::cout << "server start" << std::endl;
@@ -131,7 +130,7 @@ void	Server::waitEvent()
 	if (res == -1)
 		pollHandle();
 	// if (res == 0) //timeout
-	// 	std::cout << "poll time out" << std::endl;
+		// std::cout << "poll time out" << std::endl;
 }
 
 void	Server::checkUserStatus()
@@ -141,7 +140,7 @@ void	Server::checkUserStatus()
 	{
 		if ((*it)->getCommand().get_commands().size() == 1)
 		{
-			doCommand(it);
+			tryCommand(it);
 		}
 		if ((*it)->getIsExit() == true)
 		{
@@ -158,52 +157,78 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	std::cout << "fd: " <<  (*user)->getFd() << std::endl;
 
 	//TODO 渡されたコマンドごとに処理を行う
-	//	if(!try_command())
-	//		error_return()
+	// if(!try_command())
+	// 		error_return()
+	if((*user)->getCommand().get_commands().at(0) == "CAP")
+	{
+		// cap nick
+		capNick(user, (*user)->getCommand().get_args().at(2));
+		std::cout << "capNick done: " << (*user)->getNickName() << std::endl;
+		exit(0);
+
+		std::vector<std::string> user_arg;
+		//　2 以降をuser_argに追加し続ける
+
+		std::string string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
+		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+			std::cout << "it is wrong!!" << std::endl;
+		return ;
+	}
+	if((*user)->getCommand().get_commands().at(0) == "PASS")
+	{
+		std::string string = "127.0.0.1 PASS Correct password\n";
+		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+			std::cout << "it is wrong!!" << std::endl;
+		return ;
+	}
 	if((*user)->getCommand().get_commands().at(0) == "NICK")
 	{
-		std::cout << "NICK called" << std::endl;
-		// nick();
 		return ;
 	}
-	if((*user)->getCommand().get_commands().at(0) == "MODE")
+	if((*user)->getCommand().get_commands().at(0) == "USER")
 	{
-		std::cout << "MODE called" << std::endl;
 		return ;
 	}
-	if((*user)->getCommand().get_commands().at(0) == "WHOIS")
+	// if((*user)->getCommand().get_commands().at(0) == "MODE")
+	// {
+	// 	std::cout << "MODE called" << std::endl;
+	// 	return ;
+	// }
+	// if((*user)->getCommand().get_commands().at(0) == "WHOIS")
+	// {
+	// 	std::cout << "WHOIS called" << std::endl;
+	// 	return ;
+	// }
+	if((*user)->getCommand().get_commands().at(0) == "JOIN")
 	{
-		std::cout << "WHOIS called" << std::endl;
+		std::string string = ":test JOIN #one\n";
+		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+			std::cout << "it is wrong!!" << std::endl;
 		return ;
 	}
-	std::string string = "127.0.0.1 PASS Correct password\n";
+	if((*user)->getCommand().get_commands().at(0) == "PRIVMSG")
+	{
+		std::string string = ":test PRIVMSG #one :hello~~\n";
+		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+			std::cout << "it is wrong!!" << std::endl;
+		return ;
+	}
 
-	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
-	string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
-	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
-	string = ":kirari JOIN #one\n";
-	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
-	string = ":kirari PRIVMSG #one :hello~~\n";
-	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
 	(*user)->getCommand().get_commands().resize(0);
 }
 
-bool	Server::findCommand(std::string command)
-{
-	// if (command == "PRIVMSG")
-	// else if (command == b)
-	// else if (command == c)
-	// else if (command == d)
-	// else if (command == e)
-	// else if (command == f)
-	// return true
+// bool	Server::findCommand(std::string command)
+// {
+// 	// if (command == "PRIVMSG")
+// 	// else if (command == b)
+// 	// else if (command == c)
+// 	// else if (command == d)
+// 	// else if (command == e)
+// 	// else if (command == f)
 
-	// return false;
-}
+// 	// return true
+// 	// return false;
+// }
 
 void	Server::receiveMessage()
 {

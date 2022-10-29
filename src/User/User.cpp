@@ -51,6 +51,17 @@ void	User::receive()
 	command.parse(buffer);
 }
 
+std::string User::getNickName()
+{
+	return (this->nickName);
+}
+
+void	User::setNickName(std::string str)
+{
+	this->nickName = str;
+}
+
+
 Command	User::getCommand()
 {
 	return (this->command);

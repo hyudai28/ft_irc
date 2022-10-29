@@ -37,7 +37,7 @@ void	Command::parse(std::string buffer)
 	while (buffer != elem)
 	{
 		elem = buffer.substr(0, buffer.find(delim));
-		std::cout << "on loop: " << elem << std::endl;
+		// std::cout << "on loop: " << elem << std::endl;
 		args.push_back(elem);
 		buffer = buffer.erase(0, buffer.find(delim) + delim.length());
 	}
@@ -55,6 +55,11 @@ std::string	Command::get_prefix()
 std::vector<std::string>	Command::get_commands()
 {
 	return (this->commands);
+}
+
+void	Command::set_arg_vector(std::vector<std::string> arg_vector)
+{
+	this->args = arg_vector;
 }
 
 std::vector<std::string>	Command::get_args()

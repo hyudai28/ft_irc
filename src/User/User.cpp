@@ -31,18 +31,6 @@ void	User::receive()
 
 	bzero(buffer, BUFFER_MAX);
 	res = recv(fd, &buffer, BUFFER_MAX, 0);
-	std::string string = "127.0.0.1 PASS Correct password\n";
-	if (-1 == send(fd, string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
-	string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
-	if (-1 == send(fd, string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
-	string = ":kirari JOIN #one\n";
-	if (-1 == send(fd, string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
-	string = ":kirari PRIVMSG #one :hello~~\n";
-	if (-1 == send(fd, string.c_str(), string.length(), 0))
-		std::cout << "it is wrong!!" << std::endl;
 	std::cout << "res: " << res << std::endl;
 	if (res < 0)
 	{

@@ -141,8 +141,7 @@ void	Server::checkUserStatus()
 	{
 		if ((*it)->getCommand().get_commands().size() == 1)
 		{
-			std::cout << "do command" << std::endl;
-			std::cout << (*it)->getCommand().get_commands().at(0) << std::endl;
+			doCommand(it);
 		}
 		if ((*it)->getIsExit() == true)
 		{
@@ -150,6 +149,60 @@ void	Server::checkUserStatus()
 			deleteUser(*(*it));
 		}
 	}
+}
+
+void	Server::tryCommand(std::vector<User *>::iterator user)
+{
+	std::cout << "try command" << std::endl;
+	std::cout << (*user)->getCommand().get_commands().at(0) << std::endl;
+	std::cout << "fd: " <<  (*user)->getFd() << std::endl;
+
+	//TODO 渡されたコマンドごとに処理を行う
+	//	if(!try_command())
+	//		error_return()
+	if((*user)->getCommand().get_commands().at(0) == "NICK")
+	{
+		std::cout << "NICK called" << std::endl;
+		// nick();
+		return ;
+	}
+	if((*user)->getCommand().get_commands().at(0) == "MODE")
+	{
+		std::cout << "MODE called" << std::endl;
+		return ;
+	}
+	if((*user)->getCommand().get_commands().at(0) == "WHOIS")
+	{
+		std::cout << "WHOIS called" << std::endl;
+		return ;
+	}
+	std::string string = "127.0.0.1 PASS Correct password\n";
+
+	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
+	string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
+	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
+	string = ":kirari JOIN #one\n";
+	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
+	string = ":kirari PRIVMSG #one :hello~~\n";
+	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+		std::cout << "it is wrong!!" << std::endl;
+	(*user)->getCommand().get_commands().resize(0);
+}
+
+bool	Server::findCommand(std::string command)
+{
+	// if (command == "PRIVMSG")
+	// else if (command == b)
+	// else if (command == c)
+	// else if (command == d)
+	// else if (command == e)
+	// else if (command == f)
+	// return true
+
+	// return false;
 }
 
 void	Server::receiveMessage()

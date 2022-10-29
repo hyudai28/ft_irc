@@ -25,6 +25,8 @@ class Server
 
 		void	start(int port);
 		void	loop();
+		void	tryCommand(std::vector<User *>::iterator user);
+		bool	findCommand(std::string command);
 
 		/* utils */
 		void	waitEvent();

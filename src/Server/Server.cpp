@@ -150,30 +150,39 @@ void	Server::checkUserStatus()
 	}
 }
 
+
+// コマンドを実行しようとする
 void	Server::tryCommand(std::vector<User *>::iterator user)
 {
 	std::cout << "try command" << std::endl;
 	std::cout << (*user)->getCommand().get_commands().at(0) << std::endl;
 	std::cout << "fd: " <<  (*user)->getFd() << std::endl;
 
-	//TODO 渡されたコマンドごとに処理を行う
-	// if(!try_command())
-	// 		error_return()
+	//TODO 渡されたコマンドを実行しようとする
+	// CAP これはIRSSIが使ってる拡張機能で、対応する必要はないから
+	// 場当たり的な処理をしている
 	if((*user)->getCommand().get_commands().at(0) == "CAP")
 	{
-		// cap nick
+		// cap nick　通常のnickに追加でargを渡している
 		capNick(user, (*user)->getCommand().get_args().at(2));
 		std::cout << "capNick done: " << (*user)->getNickName() << std::endl;
 		exit(0);
 
+		//　args.at(2) 以降をuser_argに追加し続ける
 		std::vector<std::string> user_arg;
-		//　2 以降をuser_argに追加し続ける
 
 		std::string string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
 		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 			std::cout << "it is wrong!!" << std::endl;
 		return ;
 	}
+	// passwordがあってるかを確認する
+	// 今はこういう形だけどそのうち
+	// if (command == pass)
+	// {
+	// 	pass(user);
+	// }
+	// という形式にする　以下全てのコマンドも同様
 	if((*user)->getCommand().get_commands().at(0) == "PASS")
 	{
 		std::string string = "127.0.0.1 PASS Correct password\n";
@@ -181,24 +190,6 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 			std::cout << "it is wrong!!" << std::endl;
 		return ;
 	}
-	if((*user)->getCommand().get_commands().at(0) == "NICK")
-	{
-		return ;
-	}
-	if((*user)->getCommand().get_commands().at(0) == "USER")
-	{
-		return ;
-	}
-	// if((*user)->getCommand().get_commands().at(0) == "MODE")
-	// {
-	// 	std::cout << "MODE called" << std::endl;
-	// 	return ;
-	// }
-	// if((*user)->getCommand().get_commands().at(0) == "WHOIS")
-	// {
-	// 	std::cout << "WHOIS called" << std::endl;
-	// 	return ;
-	// }
 	if((*user)->getCommand().get_commands().at(0) == "JOIN")
 	{
 		std::string string = ":test JOIN #one\n";
@@ -213,21 +204,31 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 			std::cout << "it is wrong!!" << std::endl;
 		return ;
 	}
+	// if((*user)->getCommand().get_commands().at(0) == "NICK")
+	// {
+	// 	return ;
+	// }
+	// if((*user)->getCommand().get_commands().at(0) == "USER")
+	// {
+	// 	return ;
+	// }
+	// if((*user)->getCommand().get_commands().at(0) == "MODE")
+	// {
+	// 	std::cout << "MODE called" << std::endl;
+	// 	return ;
+	// }
+	// if((*user)->getCommand().get_commands().at(0) == "WHOIS")
+	// {
+	// 	std::cout << "WHOIS called" << std::endl;
+	// 	return ;
+	// }
 
+	// コマンドを掃除する
 	(*user)->getCommand().get_commands().resize(0);
 }
 
 // bool	Server::findCommand(std::string command)
 // {
-// 	// if (command == "PRIVMSG")
-// 	// else if (command == b)
-// 	// else if (command == c)
-// 	// else if (command == d)
-// 	// else if (command == e)
-// 	// else if (command == f)
-
-// 	// return true
-// 	// return false;
 // }
 
 void	Server::receiveMessage()

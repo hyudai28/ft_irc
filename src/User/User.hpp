@@ -12,6 +12,7 @@ class User
 {
 	private:
 		Command	command;
+		std::string nickName;
 		std::string	userName;
 		// int			socketNumber;
 		// bool		isAccess;
@@ -22,7 +23,9 @@ class User
 		User(int fd, struct sockaddr_in addr);
 		~User();
 		void	receive();
-
+		std::string getNickName();
+		void	setNickName(std::string nickName);
+		Command getCommand();
 		bool	getIsExit();
 		int		getFd();
 };

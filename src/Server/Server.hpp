@@ -25,6 +25,8 @@ class Server
 
 		void	start(int port);
 		void	loop();
+		void	tryCommand(std::vector<User *>::iterator user);
+		// bool	findCommand(std::string command);
 
 		/* utils */
 		void	waitEvent();
@@ -46,6 +48,11 @@ class Server
 		void	listenHandle();
 		void	acceptHandle();
 		void	pollHandle();
+
+		/* commands */
+		void	nick(std::vector<User *>::iterator user);
+		void	capNick(std::vector<User *>::iterator user, std::string arg);
+
 };
 
 #endif /* SERVER_HPP */

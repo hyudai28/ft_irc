@@ -17,9 +17,11 @@ class Command
 
 		void		parse(std::string buffer);
 
-		std::string	get_prefix();
+		std::string					get_prefix();
 		std::vector<std::string>	get_commands();
 		std::vector<std::string>	get_args();
+		// for cap ls
+		void						set_arg_vector(std::vector<std::string> arg_vector);
 };
 
 #endif

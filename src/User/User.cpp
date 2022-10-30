@@ -5,6 +5,8 @@
 #include <strings.h>
 #include <cstdlib>
 
+#include "User.hpp"
+
 User::User()
 {
 
@@ -36,6 +38,7 @@ void	User::receive()
 	}
 	else if (res == 0)
 	{
+		std::cout << "hello" << std::endl;
 		std::cout << "disconnect: " << this->fd << std::endl;
 		this->isExit = true;
 		// exit (8);
@@ -46,6 +49,22 @@ void	User::receive()
 	buffer[BUFFER_MAX] = '\0';
 	//サーバーにメンバーが入った時にもrecvが反応してparseをしてしまう。弾く方法を考える必要あり
 	command.parse(buffer);
+}
+
+std::string User::getNickName()
+{
+	return (this->nickName);
+}
+
+void	User::setNickName(std::string str)
+{
+	this->nickName = str;
+}
+
+
+Command	User::getCommand()
+{
+	return (this->command);
 }
 
 bool	User::getIsExit()

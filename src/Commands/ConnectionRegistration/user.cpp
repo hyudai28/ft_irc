@@ -6,7 +6,7 @@
 
 
 	USERコマンドはコネクションの最初に、新規ユーザーに
-	username, hostname, realnameを指定するするために使われる
+	権限　, hostname, realnameを指定するするために使われる
 
 	mode引数は数字でなければいけない、そしてサーバーに自動で設定されうる
 	この引数は2bitのbitmaskで、

@@ -4,7 +4,7 @@ NAME = ft_irc
 # ****************************************************************************
 
 CXX = c++
-INCLUDE = -I src/Server/ -I src/User/ -I src/User/Command
+INCLUDE = -I src/Server/ -I src/User/ -I src/User/Command -I src/Commands/ConnectionRegistration
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 CXXFLAGS += $(INCLUDE)
 
@@ -16,7 +16,9 @@ SRC_FILES	=	Server/Server.cpp \
 				Server/Error.cpp \
 				User/User.cpp \
 				User/Command/Command.cpp \
-			main.cpp
+				Commands/ConnectionRegistration/nick.cpp \
+				main.cpp \
+
 SRCS = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 OBJ_DIR = objs/
@@ -40,6 +42,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)Server
 	mkdir -p $(OBJ_DIR)User
 	mkdir -p $(OBJ_DIR)User/Command
+	mkdir -p $(OBJ_DIR)Commands/ConnectionRegistration
 
 run: all
 	./ft_irc

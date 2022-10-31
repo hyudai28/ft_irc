@@ -31,7 +31,7 @@ void	User::receive()
 
 	bzero(buffer, BUFFER_MAX);
 	res = recv(fd, &buffer, BUFFER_MAX, 0);
-	std::cout << "res: " << res << std::endl;
+	// std::cout << "res: " << res << std::endl;
 	if (res < 0)
 	{
 		std::exit (7);
@@ -43,9 +43,9 @@ void	User::receive()
 		this->isExit = true;
 		// exit (8);
 	}
-	std::cout << "===================" << std::endl;
-	std::cout << buffer;
-	std::cout << "===================" << std::endl;
+	printDebugMsgWhite("=MSG RECEIVED======");
+	printDebugMsgWhite(buffer);
+	printDebugMsgWhite("===================");
 	buffer[BUFFER_MAX] = '\0';
 	//サーバーにメンバーが入った時にもrecvが反応してparseをしてしまう。弾く方法を考える必要あり
 	command.parse(buffer);

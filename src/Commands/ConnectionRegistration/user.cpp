@@ -6,15 +6,15 @@
 
 void Server::user(std::vector<User *>::iterator user)
 {
-   std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
-   std::cout << "user called" << std::endl;
+   // std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
+   // printDebugMsgYellow("user called");
    // exit(1);
 }
 
 void Server::capUser(std::vector<User *>::iterator user, std::string arg)
 {
    // (*user)->setNickName(arg);  
-   std::cout << "capUser done" << std::endl;
+   printDebugMsgYellow("capUser done");
    // exit(1);
 }
 

@@ -2,11 +2,11 @@
 #include "User.hpp"
 #include "Channel.hpp"
 
-bool	Server::is_channel_exist(std::string newCh)
+bool	Server::isChannelExist(std::string newCh)
 {
 	for(int i = 0; i < channels.size(); i++)
 	{
-		std::cout << "checking channels!" << std::endl;
+		// printDebugMsgYellow("checking channels!");
 		if (channels.at(i).chName == newCh)
 			return true;
 	}
@@ -15,22 +15,21 @@ bool	Server::is_channel_exist(std::string newCh)
 
 void	Server::join(std::vector<User *>::iterator user)
 {
-	std::cout << "join called!" << std::endl;
+	printDebugMsgYellow("join called!");
+
 	std::string arg_ch_name = (*user)->getCommand().get_args().at(0);
 
 	//とりあえずここで引数出すか
-	for (int i = 0; i < (*user)->getCommand().get_args().size(); i++)
-	{
-		std::cout << i << ":" << (*user)->getCommand().get_args().at(i) << std::endl;
-	}
+	// for (int i = 0; i < (*user)->getCommand().get_args().size(); i++)
+	// {
+	// 	std::cout << i << ":" << (*user)->getCommand().get_args().at(i) << std::endl;
+	// }
 	//引数のチャンネル名が、serverのチャンネルリストのなかにあるか確認
-	if (is_channel_exist(arg_ch_name))
+	if (isChannelExist(arg_ch_name))
 	{
-		std::cout << "EXIST" << std::endl;
 	}
 	else
 	{
-		std::cout << "NON!" << std::endl;
 		Channel newCh;
 		newCh.chName = (*user)->getCommand().get_args().at(0);
 		channels.push_back(newCh);
@@ -44,17 +43,17 @@ void	Server::join(std::vector<User *>::iterator user)
 			ch = &(channels.at(i));
 	}
 	//
-	if (ch->is_user_joined((*user)->getNickName()))
+	if (ch->isUserJoined((*user)->getNickName()))
 	{
-		std::cout << "JOINED" << std::endl;
+		// printDebugMsgYellow("JOINED");
 	}
 	else
 	{
-		std::cout << "NON JOINED!" << std::endl;
+		// printDebugMsgYellow("NON JOINED!");
 		ch->chUsers.push_back((*user)->getNickName());
-		std::cout << "USER ADDED!" << std::endl;
-		for (int i = 0; i < ch->chUsers.size(); i++)
-			std::cout << ch->chUsers.at(i) << std::endl;
+		// printDebugMsgYellow("USER ADDED!");
+		// for (int i = 0; i < ch->chUsers.size(); i++)
+		// 	std::cout << ch->chUsers.at(i) << std::endl;
 	}
 
 	// exit(1);

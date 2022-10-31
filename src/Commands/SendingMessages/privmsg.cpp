@@ -15,7 +15,7 @@
 
 void Server::privateMessages(std::vector<User *>::iterator user)
 {
-   std::cout << "private on!" << std::endl;
+   printDebugMsgYellow("private called!");
    // std::string string = ":test PRIVMSG #one :hello~~\n";
 	// if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 	// 	std::cout << "it is wrong!!" << std::endl;

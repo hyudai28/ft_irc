@@ -5,6 +5,9 @@
 # include <vector>
 # include <iostream>
 
+#include "Debug.hpp"
+
+
 class Command
 {
 	private:

@@ -138,9 +138,7 @@ void	Server::checkUserStatus()
 // コマンドを実行しようとする
 void	Server::tryCommand(std::vector<User *>::iterator user)
 {
-	std::cout << "try command" << std::endl;
-	std::cout << (*user)->getCommand().get_commands().at(0) << std::endl;
-	std::cout << "fd: " <<  (*user)->getFd() << std::endl;
+	// printDebugMsgYellow((*user)->getCommand().get_commands().at(0));
 
 	//TODO 渡されたコマンドを実行しようとする
 	// CAP これはIRSSIが使ってる拡張機能で、対応する必要はないから
@@ -149,16 +147,15 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	{
 		// cap nick　通常のnickに追加でargを渡している
 		capNick(user, (*user)->getCommand().get_args().at(2));
-		std::cout << "capNick done: " << (*user)->getNickName() << std::endl;
 
 		// cap user
 		//　args.at(2) 以降をuser_argに追加し続ける
 		std::vector<std::string> user_arg;
 		capUser(user, (*user)->getCommand().get_args().at(2));
 
-		std::string string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
+		std::string string = "001 * Welcome to the Internet res:lay Network kamori!kamori@127.0.0.1\n";
 		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-			std::cout << "it is wrong!!" << std::endl;
+			printDebugMsgYellow("send failed!");
 		return ;
 	}
 	// passwordがあってるかを確認する
@@ -178,8 +175,7 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	if((*user)->getCommand().get_commands().at(0) == "JOIN")
 	{
 		join(user);
-		std::cout << "join done" << channels.at(0).chName;
-		// exit(1);
+		printDebugMsgYellow("join done");
 		return ;
 	}
 	if((*user)->getCommand().get_commands().at(0) == "PRIVMSG")

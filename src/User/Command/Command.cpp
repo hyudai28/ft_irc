@@ -14,7 +14,6 @@ using namespace std;
 
 void	Command::parse(std::string buffer)
 {
-	std::cout << buffer;
 	std::string delim = " ";
 
 	if (buffer.length() == 0)
@@ -41,10 +40,10 @@ void	Command::parse(std::string buffer)
 		args.push_back(elem);
 		buffer = buffer.erase(0, buffer.find(delim) + delim.length());
 	}
-	for (unsigned int i =0; i < commands.size(); i++)
-		std::cout <<  "cmds elem is " << commands.at(i) << endl;
-	for (unsigned int i =0; i < args.size(); i++)
-		std::cout <<  "args elem is " << args.at(i) << endl;
+	// for (unsigned int i =0; i < commands.size(); i++)
+	// 	std::cout <<  "cmds elem is " << commands.at(i) << endl;
+	// for (unsigned int i =0; i < args.size(); i++)
+	// 	std::cout <<  "args elem is " << args.at(i) << endl;
 }
 
 std::string	Command::get_prefix()

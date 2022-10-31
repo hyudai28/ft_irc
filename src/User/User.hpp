@@ -6,6 +6,9 @@
 # include <string>
 # include <iostream>
 
+#include "Debug.hpp"
+
+
 # define BUFFER_MAX 512
 
 class User

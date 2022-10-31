@@ -22,6 +22,8 @@
 
 #include "Command.hpp"
 
+#include "Debug.hpp"
+
 # define DEBUG 1
 
 class Server
@@ -68,7 +70,7 @@ class Server
 
 		/* commands */
 		// Channel　Operations
-		bool	is_channel_exist(std::string newCh);
+		bool	isChannelExist(std::string newCh);
 		void	join(std::vector<User *>::iterator user);
 
 		// connection registration

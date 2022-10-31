@@ -4,7 +4,7 @@ NAME = ft_irc
 # ****************************************************************************
 
 CXX = c++
-INCLUDE = -I src/Server/ -I src/User/ -I src/User/Command
+INCLUDE = -I src/Server/ -I src/User/ -I src/User/Command -I src/Debug/
 CXXFLAGS = -std=c++98 -Wall -Wextra
 # CXXFLAGS = -std=c++98 -Wall -Wextra -Werror
 CXXFLAGS += $(INCLUDE)
@@ -23,6 +23,7 @@ SRC_FILES	=	Server/Server.cpp \
 				Commands/ConnectionRegistration/user.cpp \
 				Commands/SendingMessages/privmsg.cpp \
 				main.cpp \
+				Debug/Debug.cpp \
 
 SRCS = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
@@ -55,6 +56,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)Commands/ServiceQueryAndCommands
 	mkdir -p $(OBJ_DIR)Commands/OptionalFeatures
 	mkdir -p $(OBJ_DIR)Commands/UserBasedQueries
+	mkdir -p $(OBJ_DIR)Debug
 
 clean:
 	rm -rf $(OBJ_DIR)

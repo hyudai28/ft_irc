@@ -6,6 +6,21 @@
 # include <vector>
 # include <map>
 # include <poll.h>
+# include "Channel.hpp"
+#include "Server.hpp"
+#include <iostream>
+#include <stdlib.h>
+#include <string.h>
+#include <netdb.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <poll.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <vector>
+#include <cerrno>
+
+#include "Command.hpp"
 
 # define DEBUG 1
 
@@ -20,6 +35,8 @@ class Server
 		std::map<int, User *>	users;
 
 	public:
+		std::vector<class Channel> channels;
+
 		Server();
 		~Server();
 
@@ -50,9 +67,18 @@ class Server
 		void	pollHandle();
 
 		/* commands */
+		// Channel　Operations
+		bool	is_channel_exist(std::string newCh);
+		void	join(std::vector<User *>::iterator user);
+
+		// connection registration
 		void	nick(std::vector<User *>::iterator user);
 		void	capNick(std::vector<User *>::iterator user, std::string arg);
+		void	user(std::vector<User *>::iterator user);
+		void	capUser(std::vector<User *>::iterator user, std::string arg);	
 
+		//  sending messages
+		void	privateMessages(std::vector<User *>::iterator user);
 };
 
 #endif /* SERVER_HPP */

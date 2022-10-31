@@ -71,7 +71,7 @@ class Server
 		/* commands */
 		// Channel　Operations
 		bool	isChannelExist(std::string newCh);
-		void	join(std::vector<User *>::iterator user);
+		void	join_channel(std::vector<User *>::iterator user);
 
 		// connection registration
 		void	nick(std::vector<User *>::iterator user);

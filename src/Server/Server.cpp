@@ -174,7 +174,7 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	}
 	if((*user)->getCommand().get_commands().at(0) == "JOIN")
 	{
-		join(user);
+		join_channel(user);
 		printDebugMsgYellow("join done");
 		return ;
 	}

@@ -13,9 +13,9 @@ bool	Server::isChannelExist(std::string newCh)
 	return false;
 }
 
-void	Server::join_channel(std::vector<User *>::iterator user)
+void	Server::joinChannel(std::vector<User *>::iterator user)
 {
-	printDebugMsgYellow("join_channel called!");
+	printDebugMsgYellow("joinChannel called!");
 
 	std::string arg_ch_name = (*user)->getCommand().get_args().at(0);
 

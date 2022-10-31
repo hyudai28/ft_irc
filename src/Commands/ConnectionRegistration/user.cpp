@@ -1,3 +1,23 @@
+#include "Server.hpp"
+#include "Command.hpp"
+#include "User.hpp"
+
+//TODO 中身の実装をしていない
+
+void Server::user(std::vector<User *>::iterator user)
+{
+   std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
+   std::cout << "user called" << std::endl;
+   // exit(1);
+}
+
+void Server::capUser(std::vector<User *>::iterator user, std::string arg)
+{
+   // (*user)->setNickName(arg);  
+   std::cout << "capUser done" << std::endl;
+   // exit(1);
+}
+
 /*
 3.1.3 User message
 

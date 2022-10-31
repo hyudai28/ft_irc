@@ -4,7 +4,6 @@
 
 void Server::nick(std::vector<User *>::iterator user)
 {
-   std::cout << "nick called" << std::endl;
    std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
    std::cout << "nick called" << std::endl;
    // exit(1);
@@ -12,12 +11,8 @@ void Server::nick(std::vector<User *>::iterator user)
 
 void Server::capNick(std::vector<User *>::iterator user, std::string arg)
 {
-   std::cout << "capNick called" << std::endl;
-   std::cout << arg << std::endl;
-   std::cout << "capNick called" << std::endl;
-   std::cout << (*user)->getFd();
-
    (*user)->setNickName(arg);   
+   std::cout << "capNick done" << std::endl;
 }
 
 /*

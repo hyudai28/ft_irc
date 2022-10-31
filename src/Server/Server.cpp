@@ -1,20 +1,4 @@
 #include "Server.hpp"
-#include "User.hpp"
-
-#include <iostream>
-#include <stdlib.h>
-#include <string.h>
-#include <netdb.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <poll.h>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <vector>
-
-#include <cerrno>
-
-#include "Command.hpp"
 
 Server::Server()
 {
@@ -166,10 +150,11 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 		// cap nick　通常のnickに追加でargを渡している
 		capNick(user, (*user)->getCommand().get_args().at(2));
 		std::cout << "capNick done: " << (*user)->getNickName() << std::endl;
-		exit(0);
 
+		// cap user
 		//　args.at(2) 以降をuser_argに追加し続ける
 		std::vector<std::string> user_arg;
+		capUser(user, (*user)->getCommand().get_args().at(2));
 
 		std::string string = "001 * Welcome to the Internet Relay Network kamori!kamori@127.0.0.1\n";
 		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
@@ -192,16 +177,14 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	}
 	if((*user)->getCommand().get_commands().at(0) == "JOIN")
 	{
-		std::string string = ":test JOIN #one\n";
-		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-			std::cout << "it is wrong!!" << std::endl;
+		join(user);
+		std::cout << "join done" << channels.at(0).chName;
+		// exit(1);
 		return ;
 	}
 	if((*user)->getCommand().get_commands().at(0) == "PRIVMSG")
 	{
-		std::string string = ":test PRIVMSG #one :hello~~\n";
-		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-			std::cout << "it is wrong!!" << std::endl;
+		privateMessages(user);
 		return ;
 	}
 	// if((*user)->getCommand().get_commands().at(0) == "NICK")

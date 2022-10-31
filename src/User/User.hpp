@@ -14,6 +14,8 @@ class User
 		Command	command;
 		std::string nickName;
 		std::string	userName;
+		// realname();
+		// hostname();
 		// int			socketNumber;
 		// bool		isAccess;
 		bool		isExit;
@@ -25,6 +27,8 @@ class User
 		void	receive();
 		std::string getNickName();
 		void	setNickName(std::string nickName);
+		void	setRealName(std::string nickName);
+		void	setHostName(std::string nickName);
 		Command getCommand();
 		bool	getIsExit();
 		int		getFd();

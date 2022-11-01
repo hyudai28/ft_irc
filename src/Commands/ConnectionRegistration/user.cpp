@@ -14,7 +14,7 @@ void Server::user(std::vector<User *>::iterator user)
 void Server::capUser(std::vector<User *>::iterator user, std::string arg)
 {
    // (*user)->setNickName(arg);  
-   printDebugMsgYellow("capUser done");
+   printDebugMsgYellow("capUser done (done nothing actually)");
    // exit(1);
 }
 

@@ -134,6 +134,38 @@ void	Server::checkUserStatus()
 	}
 }
 
+Channel* Server::getChannel(std::string chName)
+{
+	Channel *ch = NULL;
+	for (int i = 0; i < channels.size(); i++)
+	{
+		// printDebugMsgYellow("Get chn");
+		// printDebugMsgYellow(":" + channels.at(i).chName + ":");
+		// printDebugMsgYellow(":" + chName + ":");
+		if (channels.at(i).chName == chName)
+		{
+			// printDebugMsgYellow("MATCHED");
+			return (&(channels.at(i)));
+		}
+	}
+	return ch;
+}
+
+User* Server::getUserByName(std::string name)
+{
+    std::map<int, User *>::iterator iter = users.begin();
+	printDebugMsgRed("2");
+    while (iter != users.end()) {
+	printDebugMsgRed("3");
+
+		if (iter->second->getNickName() == name)
+			return iter->second;
+		iter++;
+    }
+	printDebugMsgRed("4");
+
+	return NULL;
+}
 
 // コマンドを実行しようとする
 void	Server::tryCommand(std::vector<User *>::iterator user)
@@ -146,7 +178,11 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	if((*user)->getCommand().get_commands().at(0) == "CAP")
 	{
 		// cap nick　通常のnickに追加でargを渡している
-		capNick(user, (*user)->getCommand().get_args().at(2));
+		std::string secondArg = (*user)->getCommand().get_args().at(1);
+		printDebugMsgRed(secondArg);
+		std::string elem = secondArg.substr(0, secondArg.find("\n"));
+		printDebugMsgRed(elem);
+		capNick(user, elem);
 
 		// cap user
 		//　args.at(2) 以降をuser_argに追加し続ける
@@ -202,8 +238,12 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	// 	return ;
 	// }
 
+	//TODO exe like garbage
 	// コマンドを掃除する
-	(*user)->getCommand().get_commands().resize(0);
+	// (*user)->getCommand().get_commands().resize(0);
+	std::vector<std::string> zero;
+	(*user)->getCommand().commands = zero;
+	(*user)->getCommand().set_arg_vector(zero);
 }
 
 // bool	Server::findCommand(std::string command)

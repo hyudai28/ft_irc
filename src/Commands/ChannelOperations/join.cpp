@@ -36,12 +36,9 @@ void	Server::joinChannel(std::vector<User *>::iterator user)
 	}
 	// userがチャンネルの中にいるかを確認する　してなかったら入居
 	//　該当のチャンネルを探す必要がある
-	Channel *ch;
-	for (int i = 0; i < channels.size(); i++)
-	{
-		if (channels.at(i).chName == arg_ch_name)
-			ch = &(channels.at(i));
-	}
+	Channel *ch = getChannel(arg_ch_name);
+	if (ch == NULL)
+		return ;
 	//
 	if (ch->isUserJoined((*user)->getNickName()))
 	{

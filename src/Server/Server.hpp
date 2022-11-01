@@ -53,6 +53,9 @@ class Server
 		void	receiveMessage();
 		void	checkUserStatus();
 		void	deleteUser(User &user);
+		Channel* getChannel(std::string string);
+		User* getUserByName(std::string name);
+
 
 		/* getter */
 		std::vector<User *> getVectorUsers();

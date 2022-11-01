@@ -14,8 +14,8 @@ class Command
 		std::string	prefix;
 		std::vector<std::string>	commands;
 		std::vector<std::string>	args;
-
 	public:
+
 		Command();
 
 		void		parse(std::string buffer);

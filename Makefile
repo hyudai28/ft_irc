@@ -58,6 +58,9 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)Commands/UserBasedQueries
 	mkdir -p $(OBJ_DIR)Debug
 
+run: all
+	./ft_irc
+
 clean:
 	rm -rf $(OBJ_DIR)
 	rm -fr *.dSYM

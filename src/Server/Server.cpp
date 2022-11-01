@@ -242,7 +242,7 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	// コマンドを掃除する
 	// (*user)->getCommand().get_commands().resize(0);
 	std::vector<std::string> zero;
-	(*user)->getCommand().commands = zero;
+	// (*user)->getCommand().commands = zero;
 	(*user)->getCommand().set_arg_vector(zero);
 }
 

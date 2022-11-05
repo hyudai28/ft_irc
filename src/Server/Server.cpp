@@ -137,7 +137,7 @@ void	Server::checkUserStatus()
 Channel* Server::getChannel(std::string chName)
 {
 	Channel *ch = NULL;
-	for (int i = 0; i < channels.size(); i++)
+	for (std::vector<Channel>::size_type i = 0; i < channels.size(); i++)
 	{
 		// printDebugMsgYellow("Get chn");
 		// printDebugMsgYellow(":" + channels.at(i).chName + ":");

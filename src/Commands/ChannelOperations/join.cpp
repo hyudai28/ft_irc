@@ -4,7 +4,7 @@
 
 bool	Server::isChannelExist(std::string newCh)
 {
-	for(int i = 0; i < channels.size(); i++)
+	for(std::vector<Channel>::size_type i = 0; i < channels.size(); i++)
 	{
 		// printDebugMsgYellow("checking channels!");
 		if (channels.at(i).chName == newCh)

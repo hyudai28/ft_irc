@@ -12,7 +12,7 @@ Channel::~Channel()
 
 bool	Channel::isUserJoined(std::string nickname)
 {
-	for(int i = 0; i < chUsers.size(); i++)
+	for(std::vector<std::__cxx11::basic_string<char> >::size_type i = 0; i < chUsers.size(); i++)
 	{
 		// std::cout << "checking channels!" << std::endl;
 		if (chUsers.at(i) == nickname)

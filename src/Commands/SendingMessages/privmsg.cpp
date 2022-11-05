@@ -10,12 +10,12 @@ void Server::privateMessages(std::vector<User *>::iterator user)
    {
       printDebugMsgRed("No target");
       return ;
-   }  
+   }
    // if (args.size() <= 2)
    // {
    //    printDebugMsgRed("No msg");
    //    return ;
-   // }   
+   // }
 
    //　対象のチャンネルを持ってくる、なかったらエラー
    std::string targetCh = (*user)->getCommand().get_args().at(0);
@@ -35,7 +35,7 @@ void Server::privateMessages(std::vector<User *>::iterator user)
    // printDebugMsgYellow("CH found: " + ch->chName);
    // 引数から合体メッセージ群を用意する
    std::string msg = "";
-   for (int i = 1; i < args.size() ; i++)
+   for (std::vector<std::string>::size_type i = 1; i < args.size() ; i++)
    {
       if (i == 1)
          msg = msg + args.at(i);
@@ -53,7 +53,7 @@ void Server::privateMessages(std::vector<User *>::iterator user)
    // printDebugMsgYellow(msg);
 
    // 対象のチャンネルの参加者全員に対して引数メッセージを渡す
-   for (int i = 0; i < ch->chUsers.size(); i++)
+   for (std::vector<std::string>::size_type i = 0; i < ch->chUsers.size(); i++)
    {
       // TODO fdを探して、ユーザーに送る
       printDebugMsgRed("1");

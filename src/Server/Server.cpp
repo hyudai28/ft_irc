@@ -66,7 +66,6 @@ void	Server::loop()
 	}
 	//ユーザーが退出したら削除する
 	checkUserStatus();
-	// TODO やるべきこと、checkUserStatusの中身が入っているならそこで出すこと
 }
 
 void	Server::addUser()
@@ -119,11 +118,14 @@ void	Server::waitEvent()
 
 void	Server::checkUserStatus()
 {
+	printDebugMsgRed("CheckUserStatus");
 	std::vector<User *> users = getVectorUsers();
 	for (std::vector<User *>::iterator it = users.begin(); it != users.end(); ++it)
 	{
-		if ((*it)->getCommand().get_commands().size() == 1)
+		printDebugMsgRed("Check : " + (*it)->getNickName());
+		if ((*it)->getCommand().get_commands().size() >= 1)
 		{
+			printDebugMsgRed("MSG TO " + (*it)->getNickName());
 			tryCommand(it);
 		}
 		if ((*it)->getIsExit() == true)
@@ -154,34 +156,48 @@ Channel* Server::getChannel(std::string chName)
 User* Server::getUserByName(std::string name)
 {
     std::map<int, User *>::iterator iter = users.begin();
-	printDebugMsgRed("2");
     while (iter != users.end()) {
-	printDebugMsgRed("3");
-
+		// printDebugMsgRed("3");
+		//TODO　printしたら治るやつだw　なかったら落ちた
+		// printDebugMsgRed(name);
+		// printDebugMsgRed(iter->second->getNickName());
 		if (iter->second->getNickName() == name)
+		{
+			// printDebugMsgRed("Name Found");
 			return iter->second;
+		}
+		// printDebugMsgRed("3.5");
 		iter++;
     }
-	printDebugMsgRed("4");
-
 	return NULL;
 }
 
 // コマンドを実行しようとする
 void	Server::tryCommand(std::vector<User *>::iterator user)
 {
+	// printDebugMsgYellow("tryCommand called---");
 	// printDebugMsgYellow((*user)->getCommand().get_commands().at(0));
 
 	//TODO 渡されたコマンドを実行しようとする
 	// CAP これはIRSSIが使ってる拡張機能で、対応する必要はないから
 	// 場当たり的な処理をしている
+	if((*user)->getCommand().get_commands().at(0) == "")
+		return ;
+	if ((*user)->getCommand().get_args().size() != 0)
 	if((*user)->getCommand().get_commands().at(0) == "CAP")
 	{
 		// cap nick　通常のnickに追加でargを渡している
-		std::string secondArg = (*user)->getCommand().get_args().at(1);
-		printDebugMsgRed(secondArg);
+		std::string secondArg;
+		if ((*user)->getCommand().get_args().size() > 1)
+			secondArg = (*user)->getCommand().get_args().at(1);
+		else
+		{
+			printDebugMsgRed("Fail arg");
+			return ;
+		}
+		// printDebugMsgRed(secondArg);
 		std::string elem = secondArg.substr(0, secondArg.find("\n"));
-		printDebugMsgRed(elem);
+		// printDebugMsgRed(elem);
 		capNick(user, elem);
 
 		// cap user
@@ -192,8 +208,8 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 		std::string string = "001 * Welcome to the Internet res:lay Network kamori!kamori@127.0.0.1\n";
 		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 			printDebugMsgYellow("send failed!");
-		return ;
 	}
+
 	// passwordがあってるかを確認する
 	// 今はこういう形だけどそのうち
 	// if (command == pass)
@@ -201,23 +217,21 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	// 	pass(user);
 	// }
 	// という形式にする　以下全てのコマンドも同様
+
 	if((*user)->getCommand().get_commands().at(0) == "PASS")
 	{
 		std::string string = "127.0.0.1 PASS Correct password\n";
 		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 			std::cout << "it is wrong!!" << std::endl;
-		return ;
 	}
 	if((*user)->getCommand().get_commands().at(0) == "JOIN")
 	{
 		joinChannel(user);
 		printDebugMsgYellow("join done");
-		return ;
 	}
 	if((*user)->getCommand().get_commands().at(0) == "PRIVMSG")
 	{
 		privateMessages(user);
-		return ;
 	}
 	// if((*user)->getCommand().get_commands().at(0) == "NICK")
 	// {
@@ -240,10 +254,13 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 
 	//TODO exe like garbage
 	// コマンドを掃除する
-	// (*user)->getCommand().get_commands().resize(0);
-	std::vector<std::string> zero;
-	// (*user)->getCommand().commands = zero;
-	(*user)->getCommand().set_arg_vector(zero);
+
+	// clean cmds
+	// if ((*user)->getCommand().commands.size() > 0)
+	// (*user)->getCommand().commands.at(0) = "";
+	// clean args
+	// (*user)->getCommand().args.resize(0);
+	return ;
 }
 
 // bool	Server::findCommand(std::string command)

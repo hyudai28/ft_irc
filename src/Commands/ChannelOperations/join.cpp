@@ -15,7 +15,7 @@ bool	Server::isChannelExist(std::string newCh)
 
 void	Server::joinChannel(std::vector<User *>::iterator user)
 {
-	printDebugMsgYellow("joinChannel called!");
+	// printDebugMsgYellow("joinChannel called!");
 
 	std::string arg_ch_name = (*user)->getCommand().get_args().at(0);
 
@@ -48,9 +48,9 @@ void	Server::joinChannel(std::vector<User *>::iterator user)
 	{
 		// printDebugMsgYellow("NON JOINED!");
 		ch->chUsers.push_back((*user)->getNickName());
-		// printDebugMsgYellow("USER ADDED!");
-		// for (int i = 0; i < ch->chUsers.size(); i++)
-		// 	std::cout << ch->chUsers.at(i) << std::endl;
+		printDebugMsgYellow("USER ADDED!");
+		for (unsigned long i = 0; i < ch->chUsers.size(); i++)
+			std::cout << ch->chUsers.at(i) << std::endl;
 	}
 
 	// exit(1);

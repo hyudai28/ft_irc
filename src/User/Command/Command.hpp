@@ -12,9 +12,9 @@ class Command
 {
 	private:
 		std::string	prefix;
+	public:
 		std::vector<std::string>	commands;
 		std::vector<std::string>	args;
-	public:
 
 		Command();
 
@@ -24,6 +24,7 @@ class Command
 		std::vector<std::string>	get_commands();
 		std::vector<std::string>	get_args();
 		// for cap ls
+		void						set_cmds_vector(std::vector<std::string> arg_vector);
 		void						set_arg_vector(std::vector<std::string> arg_vector);
 };
 

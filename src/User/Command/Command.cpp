@@ -56,6 +56,11 @@ std::vector<std::string>	Command::get_commands()
 	return (this->commands);
 }
 
+void	Command::set_cmds_vector(std::vector<std::string> arg_vector)
+{
+	this->commands = arg_vector;
+}
+
 void	Command::set_arg_vector(std::vector<std::string> arg_vector)
 {
 	this->args = arg_vector;

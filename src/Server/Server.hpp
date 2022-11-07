@@ -20,6 +20,11 @@
 #include <vector>
 #include <cerrno>
 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+
 #include "Command.hpp"
 
 #include "Debug.hpp"

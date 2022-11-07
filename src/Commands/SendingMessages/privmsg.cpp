@@ -3,12 +3,13 @@
 
 void Server::privateMessages(std::vector<User *>::iterator user)
 {
-   printDebugMsgYellow("private called!");
+   // printDebugMsgYellow("private called!");
+   // printDebugMsgYellow("from:" + (*user)->getNickName());
 
    std::vector<std::string> args = (*user)->getCommand().get_args();
    if (args.size() == 1)
    {
-      printDebugMsgRed("No target");
+      // printDebugMsgRed("No target");
       return ;
    }
    // if (args.size() <= 2)
@@ -56,12 +57,19 @@ void Server::privateMessages(std::vector<User *>::iterator user)
    for (std::vector<std::string>::size_type i = 0; i < ch->chUsers.size(); i++)
    {
       // TODO fdを探して、ユーザーに送る
-      printDebugMsgRed("1");
+      // printDebugMsgRed("1");
       User* targetUser = getUserByName(ch->chUsers.at(i));
-      printDebugMsgYellow(i + " : " + targetUser->getNickName());
+      // printDebugMsgYellow("Target : " + targetUser->getNickName());
       if (targetUser->getNickName() != (*user)->getNickName())
+      {
 	      if (-1 == send(targetUser->getFd(), msg.c_str(), msg.length(), 0))
 		      std::cout << "it is wrong!!" << std::endl;
+         printDebugMsgYellow("PRIVMSG done");
+      }
+      else
+      {
+         // printDebugMsgRed("SAME");
+      }
    }
    // std::string string = ":test PRIVMSG #one :hello~~\n";
 	// if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))

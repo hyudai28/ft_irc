@@ -45,6 +45,7 @@ void	User::receive()
 	}
 	printDebugMsgWhite("=MSG RECEIVED======");
 	printDebugMsgWhite(buffer);
+	printDebugMsgWhite("from : " + getNickName());
 	printDebugMsgWhite("===================");
 	buffer[BUFFER_MAX] = '\0';
 	//サーバーにメンバーが入った時にもrecvが反応してparseをしてしまう。弾く方法を考える必要あり

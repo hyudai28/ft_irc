@@ -71,6 +71,14 @@ std::vector<std::string>	Command::get_args()
 	return (this->args);
 }
 
+void	Command::clearCommand()
+{
+	if (commands.size() == 0)
+		return ;
+	commands.at(0) = "";
+	commands.resize(0);
+}
+
 // void    Command::parse(std::string buffer)
 // {
 //     // std::cout << buffer;

@@ -54,6 +54,7 @@ class Server
 
 		/* utils */
 		void	waitEvent();
+		
 		void	addUser();
 		void	receiveMessage();
 		void	checkUserStatus();

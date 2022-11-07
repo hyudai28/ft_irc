@@ -48,7 +48,6 @@ void	User::receive()
 	printDebugMsgWhite("from : " + getNickName());
 	printDebugMsgWhite("===================");
 	buffer[BUFFER_MAX] = '\0';
-	//サーバーにメンバーが入った時にもrecvが反応してparseをしてしまう。弾く方法を考える必要あり
 	command.parse(buffer);
 }
 

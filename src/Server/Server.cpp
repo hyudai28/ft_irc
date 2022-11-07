@@ -127,6 +127,7 @@ void	Server::checkUserStatus()
 		{
 			printDebugMsgRed("MSG TO " + (*it)->getNickName());
 			tryCommand(it);
+			(*it)->command.clearCommand();
 		}
 		if ((*it)->getIsExit() == true)
 		{

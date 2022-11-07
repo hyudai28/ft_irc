@@ -14,7 +14,6 @@
 class User
 {
 	private:
-		Command	command;
 		std::string nickName;
 		std::string	userName;
 		// realname();
@@ -24,6 +23,7 @@ class User
 		bool		isExit;
 		int			fd;
 	public:
+		Command	command;
 		User();
 		User(int fd, struct sockaddr_in addr);
 		~User();

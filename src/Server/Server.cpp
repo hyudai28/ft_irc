@@ -118,14 +118,14 @@ void	Server::waitEvent()
 
 void	Server::checkUserStatus()
 {
-	printDebugMsgRed("CheckUserStatus");
+	// printDebugMsgRed("CheckUserStatus");
 	std::vector<User *> users = getVectorUsers();
 	for (std::vector<User *>::iterator it = users.begin(); it != users.end(); ++it)
 	{
-		printDebugMsgRed("Check : " + (*it)->getNickName());
+		// printDebugMsgRed("Check : " + (*it)->getNickName());
 		if ((*it)->getCommand().get_commands().size() >= 1)
 		{
-			printDebugMsgRed("MSG TO " + (*it)->getNickName());
+			// printDebugMsgRed("MSG TO " + (*it)->getNickName());
 			tryCommand(it);
 			(*it)->command.clearCommand();
 		}
@@ -159,7 +159,6 @@ User* Server::getUserByName(std::string name)
     std::map<int, User *>::iterator iter = users.begin();
     while (iter != users.end()) {
 		// printDebugMsgRed("3");
-		//TODO　printしたら治るやつだw　なかったら落ちた
 		// printDebugMsgRed(name);
 		// printDebugMsgRed(iter->second->getNickName());
 		if (iter->second->getNickName() == name)
@@ -182,9 +181,6 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 	//TODO 渡されたコマンドを実行しようとする
 	// CAP これはIRSSIが使ってる拡張機能で、対応する必要はないから
 	// 場当たり的な処理をしている
-	if((*user)->getCommand().get_commands().at(0) == "")
-		return ;
-	if ((*user)->getCommand().get_args().size() != 0)
 	if((*user)->getCommand().get_commands().at(0) == "CAP")
 	{
 		// cap nick　通常のnickに追加でargを渡している
@@ -210,15 +206,6 @@ void	Server::tryCommand(std::vector<User *>::iterator user)
 		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 			printDebugMsgYellow("send failed!");
 	}
-
-	// passwordがあってるかを確認する
-	// 今はこういう形だけどそのうち
-	// if (command == pass)
-	// {
-	// 	pass(user);
-	// }
-	// という形式にする　以下全てのコマンドも同様
-
 	if((*user)->getCommand().get_commands().at(0) == "PASS")
 	{
 		std::string string = "127.0.0.1 PASS Correct password\n";

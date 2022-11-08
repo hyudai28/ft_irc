@@ -3,7 +3,6 @@
 #include <cstdlib>
 #include <iostream>
 
-
 Command::Command()
 {
 
@@ -71,11 +70,12 @@ std::vector<std::string>	Command::get_args()
 	return (this->args);
 }
 
+
+// TODO もっといい初期化の仕方がありそう　要レビュー
 void	Command::clearCommand()
 {
 	if (commands.size() == 0)
 		return ;
-	commands.at(0) = "";
 	commands.resize(0);
 }
 

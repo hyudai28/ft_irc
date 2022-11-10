@@ -13,7 +13,7 @@ class Command
 	private:
 		std::string	prefix;
 	public:
-		std::vector<std::string>	commands;
+		std::vector<std::string>	cmd_name;
 		std::vector<std::string>	args;
 
 		Command();
@@ -21,7 +21,7 @@ class Command
 		void		parse(std::string buffer);
 
 		std::string					get_prefix();
-		std::vector<std::string>	get_commands();
+		std::vector<std::string>	get_cmd_name();
 		std::vector<std::string>	get_args();
 		// for cap ls
 		void						set_cmds_vector(std::vector<std::string> arg_vector);

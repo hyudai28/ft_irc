@@ -22,7 +22,7 @@ void Server::capUser(std::vector<User *>::iterator user, std::string arg)
 3.1.3 User message
 
       Command: USER
-   Parameters: <user> <mode> <unused> <realname>
+   Parameters: <username> <mode> <unused> <realname>
 
 
 	USERコマンドはコネクションの最初に、新規ユーザーに

@@ -23,6 +23,7 @@ class User
 		bool		isExit;
 		int			fd;
 	public:
+		// std::vector<Command>;
 		Command	command;
 		User();
 		User(int fd, struct sockaddr_in addr);

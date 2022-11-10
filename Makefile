@@ -16,6 +16,7 @@ SRC_DIR =		src/
 SRC_FILES	=	Server/Server.cpp \
 				Server/Error.cpp \
 				Server/Channel.cpp \
+				Server/tryCommand.cpp \
 				User/User.cpp \
 				User/Command/Command.cpp \
 				Commands/ChannelOperations/join.cpp \

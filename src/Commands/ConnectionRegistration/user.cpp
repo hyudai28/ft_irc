@@ -2,19 +2,13 @@
 #include "Command.hpp"
 #include "User.hpp"
 
-//TODO 中身の実装をしていない
-
-void Server::user(std::vector<User *>::iterator user)
+void Server::user_cmd(Command cmd, std::vector<User *>::iterator user)
 {
    // std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
-   // printDebugMsgYellow("user called");
-   // exit(1);
-}
-
-void Server::capUser(std::vector<User *>::iterator user, std::string arg)
-{
-   // (*user)->setNickName(arg);  
-   printDebugMsgYellow("capUser done (done nothing actually)");
+   printDebugMsgYellow("user done (done nothing actually)");
+   std::string string = "001 * Welcome to the Internet res:lay Network kamori!kamori@127.0.0.1\n";
+	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+		printDebugMsgYellow("send failed!");
    // exit(1);
 }
 

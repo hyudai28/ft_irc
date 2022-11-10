@@ -49,7 +49,8 @@ class Server
 
 		void	start(int port);
 		void	loop();
-		void	tryCommand(std::vector<User *>::iterator user);
+		void	tryCommand(Command cmd, std::vector<User *>::iterator user);
+		void	tryCommands(std::vector<User *>::iterator user);
 		// bool	findCommand(std::string command);
 
 		/* utils */
@@ -80,16 +81,14 @@ class Server
 		/* commands */
 		// Channel　Operations
 		bool	isChannelExist(std::string newCh);
-		void	joinChannel(std::vector<User *>::iterator user);
+		void	joinChannel(Command cmd, std::vector<User *>::iterator user);
 
 		// connection registration
-		void	nick(std::vector<User *>::iterator user);
-		void	capNick(std::vector<User *>::iterator user, std::string arg);
-		void	user(std::vector<User *>::iterator user);
-		void	capUser(std::vector<User *>::iterator user, std::string arg);	
+		void	nick(Command cmd, std::vector<User *>::iterator user);
+		void	user_cmd(Command cmd, std::vector<User *>::iterator user);
 
 		//  sending messages
-		void	privateMessages(std::vector<User *>::iterator user);
+		void	privateMessages(Command cmd, std::vector<User *>::iterator user);
 };
 
 #endif /* SERVER_HPP */

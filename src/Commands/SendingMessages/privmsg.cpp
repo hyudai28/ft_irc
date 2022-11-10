@@ -1,12 +1,12 @@
 #include "Server.hpp"
 #include "User.hpp"
 
-void Server::privateMessages(std::vector<User *>::iterator user)
+void Server::privateMessages(Command cmd, std::vector<User *>::iterator user)
 {
    // printDebugMsgYellow("private called!");
    // printDebugMsgYellow("from:" + (*user)->getNickName());
 
-   std::vector<std::string> args = (*user)->getCommand().get_args();
+   std::vector<std::string> args = cmd.get_args();
    if (args.size() == 1)
    {
       // printDebugMsgRed("No target");
@@ -19,14 +19,14 @@ void Server::privateMessages(std::vector<User *>::iterator user)
    // }
 
    //　対象のチャンネルを持ってくる、なかったらエラー
-   std::string targetCh = (*user)->getCommand().get_args().at(0);
+   std::string targetCh = cmd.get_args().at(0);
    if (targetCh[0] != '#')
       return ;
    // printDebugMsgYellow("we search: " + (targetCh));
    // targetCh.erase(0, 1);
    // printDebugMsgYellow("we search: " + (targetCh));
 
-   Channel *ch = getChannel(targetCh + "\r\n");
+   Channel *ch = getChannel(targetCh);
    // printDebugMsgYellow(channels.at(0).chName);
    if (ch == NULL)
    {
@@ -45,8 +45,6 @@ void Server::privateMessages(std::vector<User *>::iterator user)
    }
    // printDebugMsgYellow("Msg made: " + msg);
    std::string cutChName = ch->chName;
-   // std::cout << "cut:" << cutChName.size() << std::endl;
-   cutChName = cutChName.erase(cutChName.size() - 2, 2);
    // std::cout << "cut:" << cutChName.size() << std::endl;
    msg = "PRIVMSG " + cutChName + " " + msg + "\n";
    // 宛先

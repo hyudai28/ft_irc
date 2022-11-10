@@ -2,18 +2,11 @@
 #include "Command.hpp"
 #include "User.hpp"
 
-void Server::nick(std::vector<User *>::iterator user)
+void Server::nick(Command cmd, std::vector<User *>::iterator user)
 {
    // printDebugMsgYellow( "nick called");
-   // exit(1);
+   (*user)->setNickName(cmd.args.at(0));   
 }
-
-void Server::capNick(std::vector<User *>::iterator user, std::string arg)
-{
-   // printDebugMsgYellow("capNick done");
-   (*user)->setNickName(arg);   
-}
-
 /*
 4.1.3 Nick
 

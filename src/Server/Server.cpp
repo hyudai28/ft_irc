@@ -123,11 +123,13 @@ void	Server::checkUserStatus()
 	for (std::vector<User *>::iterator it = users.begin(); it != users.end(); ++it)
 	{
 		// printDebugMsgRed("Check : " + (*it)->getNickName());
-		if ((*it)->getCommand().get_cmd_name().size() >= 1)
+		// TODO  commandsのサイズがある限りにする
+		// tryCommandの中ではcommandsのサイズを全て消化するまで実行する感じ
+		if ((*it)->commands.size())
 		{
 			// printDebugMsgRed("MSG TO " + (*it)->getNickName());
-			tryCommand(it);
-			(*it)->command.clearCommand();
+			tryCommands(it);
+			(*it)->clearCommands();
 		}
 		if ((*it)->getIsExit() == true)
 		{

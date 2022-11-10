@@ -12,11 +12,11 @@ bool	Server::isChannelExist(std::string newCh)
 	return false;
 }
 
-void	Server::joinChannel(std::vector<User *>::iterator user)
+void	Server::joinChannel(Command cmd, std::vector<User *>::iterator user)
 {
 	// printDebugMsgYellow("joinChannel called!");
 
-	std::string arg_ch_name = (*user)->getCommand().get_args().at(0);
+	std::string argChName = (cmd.get_args().at(0));
 
 	//　引数出すか
 	// for (int i = 0; i < (*user)->getCommand().get_args().size(); i++)
@@ -24,28 +24,27 @@ void	Server::joinChannel(std::vector<User *>::iterator user)
 	// 	std::cout << i << ":" << (*user)->getCommand().get_args().at(i) << std::endl;
 	// }
 	//引数のチャンネル名が、serverのチャンネルリストのなかにあるか確認
-	if (isChannelExist(arg_ch_name))
+	if (isChannelExist(argChName))
 	{
 	}
 	else
 	{
 		Channel newCh;
-		newCh.chName = (*user)->getCommand().get_args().at(0);
+		newCh.chName = argChName;
 		channels.push_back(newCh);
 	}
 	// userがチャンネルの中にいるかを確認する　してなかったら入居
 	//　該当のチャンネルを探す必要がある
-	Channel *ch = getChannel(arg_ch_name);
+	Channel *ch = getChannel(argChName);
 	if (ch == NULL)
 		return ;
-	//
 	if (ch->isUserJoined((*user)->getNickName()))
 	{
-		// printDebugMsgYellow("ALREADY JOINED");
+		printDebugMsgYellow("ALREADY JOINED");
 	}
 	else
 	{
-		// printDebugMsgYellow("NON JOINED!");
+		printDebugMsgYellow("NOT JOINED YET!");
 		ch->chUsers.push_back((*user)->getNickName());
 		printDebugMsgYellow("USER ADDED!");
 		for (unsigned long i = 0; i < ch->chUsers.size(); i++)

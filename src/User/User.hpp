@@ -23,8 +23,7 @@ class User
 		bool		isExit;
 		int			fd;
 	public:
-		// std::vector<Command>;
-		Command	command;
+		std::vector<Command> commands;
 		User();
 		User(int fd, struct sockaddr_in addr);
 		~User();
@@ -33,9 +32,10 @@ class User
 		void	setNickName(std::string nickName);
 		void	setRealName(std::string nickName);
 		void	setHostName(std::string nickName);
-		Command getCommand();
 		bool	getIsExit();
 		int		getFd();
+		void	parse(std::string buffer);
+		void	clearCommands();
 };
 
 #endif

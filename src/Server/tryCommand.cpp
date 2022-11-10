@@ -1,65 +1,63 @@
 #include "Server.hpp"
 
-// コマンドを実行しようとする
-void	Server::tryCommand(std::vector<User *>::iterator user)
+void	Server::tryCommand(Command cmd, std::vector<User *>::iterator user)
 {
-	// printDebugMsgYellow("tryCommand called---");
-	// printDebugMsgYellow((*user)->getCommand().get_cmd_name().at(0));
-
 	// CAP これはIRSSIが使ってる拡張で、対応する必要はないから場当たり的な処理してる
-	if((*user)->getCommand().get_cmd_name().at(0) == "CAP")
+	if(cmd.cmd_name == "CAP")
 	{
-		// cap nick　通常のnickに追加でargを渡している
-		std::string secondArg;
-		if ((*user)->getCommand().get_args().size() > 1)
-			secondArg = (*user)->getCommand().get_args().at(1);
-		else
-		{
-			printDebugMsgRed("Fail arg");
-			return ;
-		}
-		std::string elem = secondArg.substr(0, secondArg.find("\n"));
-		capNick(user, elem);
-		//　args.at(2) 以降をuser_argに追加し続ける
-		std::vector<std::string> user_arg;
-		capUser(user, (*user)->getCommand().get_args().at(2));
 
-		std::string string = "001 * Welcome to the Internet res:lay Network kamori!kamori@127.0.0.1\n";
-		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
-			printDebugMsgYellow("send failed!");
 	}
-	if((*user)->getCommand().get_cmd_name().at(0) == "PASS")
+	if(cmd.cmd_name == "PASS")
 	{
 		std::string string = "127.0.0.1 PASS Correct password\n";
 		if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 			std::cout << "it is wrong!!" << std::endl;
 	}
-	if((*user)->getCommand().get_cmd_name().at(0) == "JOIN")
+	if(cmd.cmd_name == "JOIN")
 	{
-		joinChannel(user);
-		printDebugMsgYellow("join done");
+		joinChannel(cmd, user);
 	}
-	if((*user)->getCommand().get_cmd_name().at(0) == "PRIVMSG")
+	if(cmd.cmd_name == "PRIVMSG")
 	{
-		privateMessages(user);
+		privateMessages(cmd, user);
 	}
-	// if((*user)->getCommand().get_cmd_name().at(0) == "NICK")
-	// {
-	// 	return ;
-	// }
-	// if((*user)->getCommand().get_cmd_name().at(0) == "USER")
-	// {
-	// 	return ;
-	// }
-	// if((*user)->getCommand().get_cmd_name().at(0) == "MODE")
+	if(cmd.cmd_name == "NICK")
+	{
+		nick(cmd, user);
+	}
+	if(cmd.cmd_name == "USER")
+	{
+		user_cmd(cmd, user);
+
+	}
+	// if(cmd.cmd_name == "MODE")
 	// {
 	// 	std::cout << "MODE called" << std::endl;
 	// 	return ;
 	// }
-	// if((*user)->getCommand().get_cmd_name().at(0) == "WHOIS")
+	// if(cmd.cmd_name == "WHOIS")
 	// {
 	// 	std::cout << "WHOIS called" << std::endl;
 	// 	return ;
 	// }
+}
+
+// コマンドを実行しようとする
+void	Server::tryCommands(std::vector<User *>::iterator user)
+{
+	// printDebugMsgYellow("tryCommand called---");
+
+	//TODO コマンドごとの実行
+	// サイズがある分だけ実行していくやつ
+
+
+	for (int i = 0; i < (*user)->commands.size(); i++)
+	{
+		printDebugMsgRed("In tryCommands");
+		std::cout <<  "cmd is " << (*user)->commands.at(i).cmd_name << std::endl;
+		// for (unsigned int j = 0; j < (*user)->commands.at(i).args.size(); j++)
+		// 	std::cout <<  "args elem is " << (*user)->commands.at(i).args.at(j) << std::endl;
+		tryCommand((*user)->commands.at(i), user);
+	}
 	return ;
 }

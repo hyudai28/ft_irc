@@ -8,6 +8,8 @@
 # include <map>
 # include <poll.h>
 
+#include "Debug.hpp"
+
 # define DEBUG 1
 
 class Channel
@@ -17,7 +19,7 @@ class Channel
 		~Channel();
 		std::string chName;
 		std::vector<std::string> chUsers;
-		bool	is_user_joined(std::string nickname);
+		bool	isUserJoined(std::string nickname);
 
 };
 

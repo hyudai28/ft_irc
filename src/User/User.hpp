@@ -6,12 +6,14 @@
 # include <string>
 # include <iostream>
 
+#include "Debug.hpp"
+
+
 # define BUFFER_MAX 512
 
 class User
 {
 	private:
-		Command	command;
 		std::string nickName;
 		std::string	userName;
 		// realname();
@@ -21,6 +23,7 @@ class User
 		bool		isExit;
 		int			fd;
 	public:
+		std::vector<Command> commands;
 		User();
 		User(int fd, struct sockaddr_in addr);
 		~User();
@@ -29,9 +32,10 @@ class User
 		void	setNickName(std::string nickName);
 		void	setRealName(std::string nickName);
 		void	setHostName(std::string nickName);
-		Command getCommand();
 		bool	getIsExit();
 		int		getFd();
+		void	parse(std::string buffer);
+		void	clearCommands();
 };
 
 #endif

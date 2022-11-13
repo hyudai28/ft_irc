@@ -2,19 +2,13 @@
 #include "Command.hpp"
 #include "User.hpp"
 
-//TODO 中身の実装をしていない
-
-void Server::user(std::vector<User *>::iterator user)
+void Server::user_cmd(Command cmd, std::vector<User *>::iterator user)
 {
-   std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
-   std::cout << "user called" << std::endl;
-   // exit(1);
-}
-
-void Server::capUser(std::vector<User *>::iterator user, std::string arg)
-{
-   // (*user)->setNickName(arg);  
-   std::cout << "capUser done" << std::endl;
+   // std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
+   printDebugMsgYellow("user done (done nothing actually)");
+   std::string string = "001 * Welcome to the Internet res:lay Network kamori!kamori@127.0.0.1\n";
+	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
+		printDebugMsgYellow("send failed!");
    // exit(1);
 }
 
@@ -22,7 +16,7 @@ void Server::capUser(std::vector<User *>::iterator user, std::string arg)
 3.1.3 User message
 
       Command: USER
-   Parameters: <user> <mode> <unused> <realname>
+   Parameters: <username> <mode> <unused> <realname>
 
 
 	USERコマンドはコネクションの最初に、新規ユーザーに

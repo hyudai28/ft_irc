@@ -20,7 +20,14 @@
 #include <vector>
 #include <cerrno>
 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+
 #include "Command.hpp"
+
+#include "Debug.hpp"
 
 # define DEBUG 1
 
@@ -42,15 +49,20 @@ class Server
 
 		void	start(int port);
 		void	loop();
-		void	tryCommand(std::vector<User *>::iterator user);
+		void	tryCommand(Command cmd, std::vector<User *>::iterator user);
+		void	tryCommands(std::vector<User *>::iterator user);
 		// bool	findCommand(std::string command);
 
 		/* utils */
 		void	waitEvent();
+		
 		void	addUser();
 		void	receiveMessage();
 		void	checkUserStatus();
 		void	deleteUser(User &user);
+		Channel* getChannel(std::string string);
+		User* getUserByName(std::string name);
+
 
 		/* getter */
 		std::vector<User *> getVectorUsers();
@@ -68,17 +80,15 @@ class Server
 
 		/* commands */
 		// Channel　Operations
-		bool	is_channel_exist(std::string newCh);
-		void	join(std::vector<User *>::iterator user);
+		bool	isChannelExist(std::string newCh);
+		void	joinChannel(Command cmd, std::vector<User *>::iterator user);
 
 		// connection registration
-		void	nick(std::vector<User *>::iterator user);
-		void	capNick(std::vector<User *>::iterator user, std::string arg);
-		void	user(std::vector<User *>::iterator user);
-		void	capUser(std::vector<User *>::iterator user, std::string arg);	
+		void	nick(Command cmd, std::vector<User *>::iterator user);
+		void	user_cmd(Command cmd, std::vector<User *>::iterator user);
 
 		//  sending messages
-		void	privateMessages(std::vector<User *>::iterator user);
+		void	privateMessages(Command cmd, std::vector<User *>::iterator user);
 };
 
 #endif /* SERVER_HPP */

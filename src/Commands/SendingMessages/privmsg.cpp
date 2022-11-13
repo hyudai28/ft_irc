@@ -1,21 +1,74 @@
 #include "Server.hpp"
 #include "User.hpp"
-#include <iostream>
-#include <stdlib.h>
-#include <string.h>
-#include <netdb.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <poll.h>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <vector>
 
-#include <cerrno>
-
-void Server::privateMessages(std::vector<User *>::iterator user)
+void Server::privateMessages(Command cmd, std::vector<User *>::iterator user)
 {
-   std::cout << "private on!" << std::endl;
+   // printDebugMsgYellow("private called!");
+   // printDebugMsgYellow("from:" + (*user)->getNickName());
+
+   std::vector<std::string> args = cmd.get_args();
+   if (args.size() == 1)
+   {
+      // printDebugMsgRed("No target");
+      return ;
+   }
+   // if (args.size() <= 2)
+   // {
+   //    printDebugMsgRed("No msg");
+   //    return ;
+   // }
+
+   //　対象のチャンネルを持ってくる、なかったらエラー
+   std::string targetCh = cmd.get_args().at(0);
+   if (targetCh[0] != '#')
+      return ;
+   // printDebugMsgYellow("we search: " + (targetCh));
+   // targetCh.erase(0, 1);
+   // printDebugMsgYellow("we search: " + (targetCh));
+
+   Channel *ch = getChannel(targetCh);
+   // printDebugMsgYellow(channels.at(0).chName);
+   if (ch == NULL)
+   {
+      printDebugMsgRed("No found");
+      return ;
+   }
+   // printDebugMsgYellow("CH found: " + ch->chName);
+   // 引数から合体メッセージ群を用意する
+   std::string msg = "";
+   for (std::vector<std::string>::size_type i = 1; i < args.size() ; i++)
+   {
+      if (i == 1)
+         msg = msg + args.at(i);
+      else
+         msg = msg + " " + args.at(i);
+   }
+   // printDebugMsgYellow("Msg made: " + msg);
+   std::string cutChName = ch->chName;
+   // std::cout << "cut:" << cutChName.size() << std::endl;
+   msg = "PRIVMSG " + cutChName + " " + msg + "\n";
+   // 宛先
+   msg = ":" + (*user)->getNickName() + " " + msg;
+   // printDebugMsgYellow(msg);
+
+   // 対象のチャンネルの参加者全員に対して引数メッセージを渡す
+   for (std::vector<std::string>::size_type i = 0; i < ch->chUsers.size(); i++)
+   {
+      // TODO fdを探して、ユーザーに送る
+      // printDebugMsgRed("1");
+      User* targetUser = getUserByName(ch->chUsers.at(i));
+      // printDebugMsgYellow("Target : " + targetUser->getNickName());
+      if (targetUser->getNickName() != (*user)->getNickName())
+      {
+	      if (-1 == send(targetUser->getFd(), msg.c_str(), msg.length(), 0))
+		      std::cout << "it is wrong!!" << std::endl;
+         printDebugMsgYellow("PRIVMSG done");
+      }
+      else
+      {
+         // printDebugMsgRed("SAME");
+      }
+   }
    // std::string string = ":test PRIVMSG #one :hello~~\n";
 	// if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 	// 	std::cout << "it is wrong!!" << std::endl;

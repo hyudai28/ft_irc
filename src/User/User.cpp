@@ -5,6 +5,15 @@
 #include <strings.h>
 #include <cstdlib>
 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+
+#include <arpa/nameser.h>
+
+#include <stdlib.h>
+
 #include "User.hpp"
 
 User::User()
@@ -17,6 +26,15 @@ User::User(int fd, struct sockaddr_in addr)
 	(void)addr;
 	this->fd = fd;
 	this->isExit = false;
+	this->hostAddr = inet_ntoa(addr.sin_addr);;
+	char name[NI_MAXHOST];
+	printDebugMsgYellow(this->hostAddr);
+
+	if (getnameinfo((struct sockaddr *)&addr, sizeof(addr), name, NI_MAXHOST, NULL, 0, NI_NUMERICSERV) != 0)
+	{
+		printDebugMsgRed("ERROR: getnameinfo");
+	}
+	this->hostName = name;
 }
 
 User::~User()

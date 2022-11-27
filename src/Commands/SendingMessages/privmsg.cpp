@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "User.hpp"
+#include "sender.cpp"
 
 void Server::privateMessages(Command cmd, std::vector<User *>::iterator user)
 {
@@ -60,7 +61,8 @@ void Server::privateMessages(Command cmd, std::vector<User *>::iterator user)
       // printDebugMsgYellow("Target : " + targetUser->getNickName());
       if (targetUser->getNickName() != (*user)->getNickName())
       {
-	      if (-1 == send(targetUser->getFd(), msg.c_str(), msg.length(), 0))
+	      // if (-1 == send(targetUser->getFd(), msg.c_str(), msg.length(), 0))
+	      if (-1 == shortSend(targetUser->getFd(), msg))
 		      std::cout << "it is wrong!!" << std::endl;
          printDebugMsgYellow("PRIVMSG done");
       }

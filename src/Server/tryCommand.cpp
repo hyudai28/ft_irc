@@ -2,10 +2,9 @@
 
 void	Server::tryCommand(Command cmd, std::vector<User *>::iterator user)
 {
-	// CAP これはIRSSIが使ってる拡張で、対応する必要はないから場当たり的な処理してる
 	if(cmd.cmd_name == "CAP")
 	{
-
+		// 対応外　スルースル
 	}
 	if(cmd.cmd_name == "PASS")
 	{
@@ -45,19 +44,14 @@ void	Server::tryCommand(Command cmd, std::vector<User *>::iterator user)
 // コマンドを実行しようとする
 void	Server::tryCommands(std::vector<User *>::iterator user)
 {
-	// printDebugMsgYellow("tryCommand called---");
-
-	//TODO コマンドごとの実行
-	// サイズがある分だけ実行していくやつ
-
-
-	for (int i = 0; i < (*user)->commands.size(); i++)
+	// printDebugMsgYellow("tryCommandS called---");
+	for (unsigned int i = 0; i < (*user)->commands.size(); i++)
 	{
-		printDebugMsgRed("In tryCommands");
-		std::cout <<  "cmd is " << (*user)->commands.at(i).cmd_name << std::endl;
-		// for (unsigned int j = 0; j < (*user)->commands.at(i).args.size(); j++)
-		// 	std::cout <<  "args elem is " << (*user)->commands.at(i).args.at(j) << std::endl;
 		tryCommand((*user)->commands.at(i), user);
+		// printDebugMsgRed("In tryCommands");
+		// std::cout <<  "cmd is " << (*user)->commands.at(i).cmd_name << std::endl;
+		// for (unsigned int j = 0; j < (*user)->commands.at(i).args.size(); j++)
+		// std::cout <<  "args elem is " << (*user)->commands.at(i).args.at(j) << std::endl;
 	}
 	return ;
 }

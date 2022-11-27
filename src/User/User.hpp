@@ -14,8 +14,6 @@
 class User
 {
 	private:
-		std::string nickName;
-		std::string	userName;
 		// realname();
 		// hostname();
 		// int			socketNumber;
@@ -23,6 +21,11 @@ class User
 		bool		isExit;
 		int			fd;
 	public:
+		std::string nickName;
+		std::string	userName;
+		std::string	realName;
+		std::string	hostName;
+		std::string	hostAddr;
 		std::vector<Command> commands;
 		User();
 		User(int fd, struct sockaddr_in addr);

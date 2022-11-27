@@ -29,6 +29,8 @@
 
 #include "Debug.hpp"
 
+#include "sender.hpp"
+
 # define DEBUG 1
 
 class Server

@@ -5,8 +5,13 @@
 void Server::nick(Command cmd, std::vector<User *>::iterator user)
 {
    // printDebugMsgYellow( "nick called");
-   (*user)->setNickName(cmd.args.at(0));   
+         // ERR_NONICKNAMEGIVEN             ERR_ERRONEUSNICKNAME
+         // ERR_NICKNAMEINUSE               ERR_NICKCOLLISION
+         // ERR_UNAVAILRESOURCE             ERR_RESTRICTED
+   if (cmd.args.size() != 0)
+      (*user)->setNickName(cmd.args.at(0)); 
 }
+
 /*
 4.1.3 Nick
 

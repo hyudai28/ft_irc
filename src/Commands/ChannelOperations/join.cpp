@@ -16,13 +16,12 @@ void	Server::joinChannel(Command cmd, std::vector<User *>::iterator user)
 {
 	// printDebugMsgYellow("joinChannel called!");
 
-	std::string argChName = (cmd.get_args().at(0));
-
-	//　引数出すか
+	//　引数
 	// for (int i = 0; i < (*user)->getCommand().get_args().size(); i++)
 	// {
 	// 	std::cout << i << ":" << (*user)->getCommand().get_args().at(i) << std::endl;
 	// }
+	std::string argChName = (cmd.get_args().at(0));
 	//引数のチャンネル名が、serverのチャンネルリストのなかにあるか確認
 	if (isChannelExist(argChName))
 	{

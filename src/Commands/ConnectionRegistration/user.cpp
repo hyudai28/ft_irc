@@ -2,14 +2,19 @@
 #include "Command.hpp"
 #include "User.hpp"
 
+#include "replies.cpp"
+
 void Server::user_cmd(Command cmd, std::vector<User *>::iterator user)
 {
-   // std::cout << (*user)->getCommand().get_args().at(0) << std::endl;
+	// if (-1 == shortSend((*user)->getFd(), RPL_WELCOME("kamori!kamori@127.0.0.1\n")))
+	// 	printDebugMsgYellow("send failed!");
+   // printDebugMsgYellow(cmd.get_args().at(0));
+   (*user)->userName = cmd.get_args().at(0);
    printDebugMsgYellow("user done (done nothing actually)");
-   std::string string = "001 * Welcome to the Internet res:lay Network kamori!kamori@127.0.0.1\n";
+   std::string string = "001 " + (*user)->nickName +  " Welcome to the Internet Network "
+   + (*user)->nickName + "!" + (*user)->userName + "@" + (*user)->hostAddr + "\n";
 	if (-1 == send((*user)->getFd(), string.c_str(), string.length(), 0))
 		printDebugMsgYellow("send failed!");
-   // exit(1);
 }
 
 /*
